@@ -1,0 +1,28 @@
+
+Baza danych dotycz¹ca ogrodu.  
+Czyli spis roœlin, wymagania dotycz¹ce sadzenia, wymagania dotycz¹ce pielêgnacji, harmonogram prac ogrodowych, i po³o¿enie ogrodów geograficznie, czy roœliny s¹ owocowe jeœli tak to kiedy plony.
+
+
+Ogrod:
+id;nazwa;lokalizacja;opis;
+
+OgrodRosliny:
+id;idOgrod;idRosliny;Wiek;dataWsadzenia;WiekWCzasieSadzenia;Zywa;Adres;
+
+Roslina: 
+id;idRodzaj;idGleba;idPoraSadzenia;idPrzycinanie;idZbieranie;zimozielona;nazwa;opis;lata;
+
+Gleba:
+id;nazwa;opis;
+
+Rodzaj:
+id;nazwa;opis;
+
+PoraSadzenia:
+id;nazwa;
+
+Przycinanie:
+id;nazwa;opis;
+
+Zbieranie:
+id;nazwa; 
