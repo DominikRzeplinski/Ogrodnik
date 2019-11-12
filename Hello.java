@@ -1,8 +1,12 @@
 import javax.swing.*;
 import Gleba.view.*;
+import Gleba.model.*;
+import Gleba.controler.*;
+import DataBase.*;
 
 public class Hello extends JFrame
 {
+	
  public Hello()
  {
  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -13,6 +17,9 @@ public class Hello extends JFrame
   public static void main(String[] args){
     System.out.print("Hello World");
 	//JFrame.setDefaultLookAndFeelDecorated(true);
-	new LabelEditDescription(0);
+	DataBaseAccess dba = new  DataBaseAccess();
+	GlebaModel model = GlebaModel.Get(0);
+	GlebaView view = new GlebaView(model);
+	GlebaControler controler = new GlebaControler(model,view);
   }
 }
