@@ -18,6 +18,7 @@ public class Hello extends JFrame
     System.out.print("Hello World");
 	//JFrame.setDefaultLookAndFeelDecorated(true);
 	DataBaseAccess dba = new  DataBaseAccess();
+	dba.SetConnection();
 	GlebaModel model = GlebaModel.Get(0);
 	GlebaView view = new GlebaView(model);
 	GlebaControler controler = new GlebaControler(model,view);

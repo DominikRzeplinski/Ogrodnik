@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-import com.healthmarketscience.jackcess.Database.*;
 
 public class DataBaseAccess{
 	private Connection connection;
@@ -13,17 +12,17 @@ public class DataBaseAccess{
 	public DataBaseAccess(){ 
 		try {
             // Retrieve class by name.
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         } catch (ClassNotFoundException exception) {
-            // Output exception ClassNotFoundExceptions.
+             //Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
 		
 	}
 	public void SetConnection(){
 		try {
-			connection = DriverManager.getConnection("dbc:hsqldb:testdb:Filmy",
-			"admin",
+			connection = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/Integra/Downloads/Ogrodnik-master/Ogrodnik-master/TEST.mdb",
+			"sa",
 			"");
         } catch (SQLException exception) {
             // Output exception ClassNotFoundExceptions.
