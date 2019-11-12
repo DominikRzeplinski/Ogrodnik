@@ -26,3 +26,5 @@ id;nazwa;opis;
 
 Zbieranie:
 id;nazwa; 
+
+java -cp .;./UCanAccess/* Hello

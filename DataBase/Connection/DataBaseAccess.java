@@ -1,13 +1,12 @@
-package DataBase;
+package DataBase.Connection;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 
-public class DataBaseAccess{
-	private Connection connection;
+public class DataBaseAccess implements IDataBaseConnection{
+	public static Connection connection;
 	
 	public DataBaseAccess(){ 
 		try {
@@ -19,9 +18,22 @@ public class DataBaseAccess{
 		}
 		
 	}
+	
+	public static void CreateDataBaseAccess(){
+		try {
+			connection = DriverManager.getConnection("jdbc:ucanaccess://Ogrodnik.mdb" + ";newdatabaseversion=V2010",
+			"sa",
+			"");
+			connection.close();
+        } catch (SQLException exception) {
+            // Output exception ClassNotFoundExceptions.
+			System.out.print(exception.toString());
+		}
+	}
+	
 	public void SetConnection(){
 		try {
-			connection = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/Integra/Downloads/Ogrodnik-master/Ogrodnik-master/TEST.mdb",
+			connection = DriverManager.getConnection("jdbc:ucanaccess://TEST.mdb",
 			"sa",
 			"");
         } catch (SQLException exception) {

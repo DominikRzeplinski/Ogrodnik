@@ -2,7 +2,7 @@ import javax.swing.*;
 import Gleba.view.*;
 import Gleba.model.*;
 import Gleba.controler.*;
-import DataBase.*;
+import DataBase.Connection.*;
 
 public class Hello extends JFrame
 {
@@ -16,9 +16,7 @@ public class Hello extends JFrame
  }
   public static void main(String[] args){
     System.out.print("Hello World");
-	//JFrame.setDefaultLookAndFeelDecorated(true);
-	DataBaseAccess dba = new  DataBaseAccess();
-	dba.SetConnection();
+	DataBaseAccess.CreateDataBaseAccess();
 	GlebaModel model = GlebaModel.Get(0);
 	GlebaView view = new GlebaView(model);
 	GlebaControler controler = new GlebaControler(model,view);
