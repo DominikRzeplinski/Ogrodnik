@@ -1,7 +1,7 @@
 import javax.swing.*;
-import Gleba.view.*;
-import Gleba.model.*;
-import Gleba.controler.*;
+import Roslina.view.*;
+import Roslina.model.*;
+import Roslina.controler.*;
 import DataBase.Connection.*;
 
 public class Hello extends JFrame
@@ -17,8 +17,8 @@ public class Hello extends JFrame
   public static void main(String[] args){
     System.out.print("Hello World");
 	DataBaseAccess.CreateDataBaseAccess();
-	GlebaModel model = GlebaModel.Get(0);
-	GlebaView view = new GlebaView(model);
-	GlebaControler controler = new GlebaControler(model,view);
+	RoslinaModel model = new RoslinaModel();
+	RoslinaView view = new RoslinaView(model);
+	RoslinaControler controler = new RoslinaControler(model,view);
   }
 }

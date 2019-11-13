@@ -1,11 +1,13 @@
 package DataBase.Table;
 import DataBase.Connection.*;
+import java.util.*;
 
 public interface ITable extends IDataBaseConnection
 {
-	public int CreateTable();
-	public int SaveData();
-	public int UpdateData();
-	public int DeleteData();
-	public int GetData();
+	public boolean CreateTable();
+	public boolean SaveData();
+	public boolean UpdateData();
+	public boolean DeleteData();
+	public boolean GetData(int id);
+	public ArrayList<String> GetDataList();
 }

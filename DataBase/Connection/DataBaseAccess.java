@@ -33,7 +33,7 @@ public class DataBaseAccess implements IDataBaseConnection{
 	
 	public void SetConnection(){
 		try {
-			connection = DriverManager.getConnection("jdbc:ucanaccess://TEST.mdb",
+			connection = DriverManager.getConnection("jdbc:ucanaccess://Ogrodnik.mdb",
 			"sa",
 			"");
         } catch (SQLException exception) {
