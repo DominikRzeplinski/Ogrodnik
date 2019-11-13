@@ -1,7 +1,7 @@
 import javax.swing.*;
-import Roslina.view.*;
-import Roslina.model.*;
-import Roslina.controler.*;
+import Ogrod.view.*;
+import Ogrod.model.*;
+import Ogrod.controler.*;
 import DataBase.Connection.*;
 
 public class Hello extends JFrame
@@ -17,8 +17,8 @@ public class Hello extends JFrame
   public static void main(String[] args){
     System.out.print("Hello World");
 	DataBaseAccess.CreateDataBaseAccess();
-	RoslinaModel model = new RoslinaModel();
-	RoslinaView view = new RoslinaView(model);
-	RoslinaControler controler = new RoslinaControler(model,view);
+	OgrodModel model = new OgrodModel();
+	OgrodView view = new OgrodView(model);
+	OgrodControler controler = new OgrodControler(model,view);
   }
 }
