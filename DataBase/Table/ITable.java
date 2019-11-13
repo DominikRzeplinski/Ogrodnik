@@ -9,5 +9,5 @@ public interface ITable extends IDataBaseConnection
 	public boolean UpdateData();
 	public boolean DeleteData();
 	public boolean GetData(int id);
-	public ArrayList<String> GetDataList();
+	public <T> Vector<T> GetDataList();
 }

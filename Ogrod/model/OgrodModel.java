@@ -5,6 +5,7 @@ import DataBase.Connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
+import ViewHelper.*;
 
 public class OgrodModel extends DataBaseAccess implements ITable
 {
@@ -14,6 +15,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	String nazwa; 
 	String opis; 
 	public String GetNazwa(){return nazwa;}
+	public int GetId(){return id;}
 	public String GetOpis(){return opis;}
 	public void SetNazwa(String nazwa){this.nazwa = nazwa;}
 	public void SetOpis(String opis){this.opis = opis;}
@@ -21,18 +23,27 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		CreateTable();
         support = new PropertyChangeSupport(this);
 	}
+	private void Reset(){
+		this.id=0;
+		this.nazwa=" ";
+		this.opis=" ";
+	}
 	
 	public boolean DeleteData() {
+		SetConnection();
 		try{
 			String deleteOgrod = "DELETE FROM Ogrod WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(deleteOgrod);
 			ps.setInt(1,this.id);
 			ps.executeUpdate();
+			Reset();
 		}catch(SQLException exception) 
 		{
            // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
+		support.firePropertyChange("Ogrod", "A", "B");
+		CloseConnection();
 		return true; 
 	}
 	public boolean SaveData() {
@@ -55,13 +66,13 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	}
 	
 	public void Update() {
-		support.firePropertyChange("Ogrod", "", "");
 		if (id > 0){
 			UpdateData();
 		}
 		else{
 			SaveData();
 		}
+		support.firePropertyChange("Ogrod", "A", "B");
 	}
 	
 	public boolean UpdateData() 
@@ -89,6 +100,8 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	
 	public boolean GetData(int id) {
 		SetConnection();
+		int temp = this.id;
+		Reset();
 		try{
 			String query = "SELECT * FROM Ogrod WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
@@ -105,6 +118,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 			System.out.print(exception.toString());
 		}
 		CloseConnection();
+		support.firePropertyChange("OgrodGetData", "a", "b");
 		return true;
 	}
  
@@ -134,9 +148,10 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		return true;
 	}
 	
-	public ArrayList<String> GetDataList()
+	public Vector<ComboBoxItem> GetDataList()
 	{
-		ArrayList<String> List = new ArrayList<String>();
+		Vector<ComboBoxItem> List = new Vector<ComboBoxItem>();
+		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
 			String query = "SELECT * FROM Ogrod";
@@ -144,7 +159,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())
 			{
-				List.add(rs.getString("Name"));
+				List.add(new ComboBoxItem(rs.getInt("Id"),rs.getString("Name")));
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
