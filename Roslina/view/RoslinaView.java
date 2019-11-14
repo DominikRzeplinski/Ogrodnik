@@ -45,7 +45,7 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 		tADescription = new JTextArea(model.GetOpis(),4,20);
 		tADescription.setInputVerifier(new InputVerifierLength(256));
 		cbGleba = new JComboBox(model.gleba.GetDataList());
-		cbRodzaj = new JComboBox(model.rodzaj.GetDataList());
+		cbRodzaj = new JComboBox(model.rodzajeRoslin.GetDataList());
 		cbPoraSadzenia = new JComboBox(model.poraSadzenia.GetDataList());
 		SetCBGleba();
 		SetCBRodzaj();
@@ -82,10 +82,10 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 						.addGroup(layout.createSequentialGroup()
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lGleba)
-								.addComponent(cbGleba)
+								.addComponent(cbGleba))
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lRodzaj)
-								.addComponent(cbRodzaj)
+								.addComponent(cbRodzaj))
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lPoraSadzenia)
 								.addComponent(cbPoraSadzenia))))

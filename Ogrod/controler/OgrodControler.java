@@ -133,7 +133,9 @@ public class OgrodControler{
     {
         public void actionPerformed(ActionEvent e) {
             try {
+			System.out.print("\nRoslina\n");
 				RoslinaModel model = new RoslinaModel();
+			System.out.print("\nRoslina\n");
 				RoslinaListaView view = new RoslinaListaView(model);
 				RoslinaListaControler controler = new RoslinaListaControler(model,view); 
             } catch (NumberFormatException nfex) {

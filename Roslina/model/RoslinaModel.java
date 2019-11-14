@@ -5,7 +5,7 @@ import DataBase.Connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import Gleba.model.*;
-import RodzajRoslin.model.*;
+import RodzajeRoslin.model.*;
 import PoraSadzenia.model.*;
 import java.util.*;
 import ViewHelper.*;
@@ -13,8 +13,8 @@ import ViewHelper.*;
 public class RoslinaModel extends DataBaseAccess implements ITable
 {
 	public GlebaModel gleba; 
-	public RodzajRoslin rodzajRoslin; 
-	public PoraSadzenia poraSadzenia; 
+	public RodzajeRoslinModel rodzajeRoslin; 
+	public PoraSadzeniaModel poraSadzenia; 
 	public String GetTableName(){return "Roslina";} 
 	private PropertyChangeSupport support;
 	int id;
@@ -34,11 +34,12 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 	public void SetIdRodzaj(int idRodzaj){this.idRodzaj = idRodzaj;}
 	public void SetIdPoraSadzenia(int idPoraSadzenia){this.idPoraSadzenia = idPoraSadzenia;}
 	public RoslinaModel(){
+		System.out.print("\nRoslina\n");
 		CreateTable();
         support = new PropertyChangeSupport(this);
 		gleba = new GlebaModel();
-		rodzajRoslin = new RodzajRoslin();
-		poraSadzenia = new PoraSadzenia();
+		rodzajeRoslin = new RodzajeRoslinModel();
+		poraSadzenia = new PoraSadzeniaModel();
 		Reset();
 	}
 	
@@ -79,9 +80,18 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 			PreparedStatement ps = connection.prepareStatement(insertRoslina,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1,this.nazwa);
 			ps.setString(2,this.opis);
-			ps.setInt(3,this.idGleby);
-			ps.setInt(4,this.idRodzaj);
-			ps.setInt(5,this.idPoraSadzenia);
+			if (this.idGleby != 0)
+				ps.setInt(3,this.idGleby);
+			else
+				ps.setNull(3,Types.INTEGER);
+			if (this.idGleby != 0)
+				ps.setInt(4,this.idRodzaj);
+			else
+				ps.setNull(4,Types.INTEGER);
+			if (this.idGleby != 0)
+				ps.setInt(5,this.idPoraSadzenia);
+			else
+				ps.setNull(5,Types.INTEGER);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -116,9 +126,12 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 			{
 				rs.updateString("Name", this.nazwa);
 				rs.updateString("Opis", this.opis);
-				rs.updateString("idGleba", this.idGleby);
-				rs.updateString("idRodzajRoslin", this.idRodzaj);
-				rs.updateString("idPoraSadzenia", this.idPoraSadzenia);
+				if (this.idGleby != 0)
+					rs.updateInt("idGleba", this.idGleby);
+				if (this.idRodzaj != 0)
+					rs.updateInt("idRodzajRoslin", this.idRodzaj);
+				if (this.idPoraSadzenia != 0)
+					rs.updateInt("idPoraSadzenia", this.idPoraSadzenia);
 				rs.updateRow();
 			}
 		}catch(SQLException exception) 
@@ -146,7 +159,7 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				this.idGleby = rs.getInt("idGleba");
 				this.gleba.GetData(rs.getInt("idGleba"));
 				this.idRodzaj = rs.getInt("idRodzajRoslin");
-				this.rodzajRoslin.GetData(rs.getInt("idRodzajRoslin"));
+				this.rodzajeRoslin.GetData(rs.getInt("idRodzajRoslin"));
 				this.idPoraSadzenia = rs.getInt("idPoraSadzenia");
 				this.poraSadzenia.GetData(rs.getInt("idPoraSadzenia"));
 			}
@@ -169,15 +182,18 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 	public boolean CreateTable(){	
 		SetConnection();
 		int ret =0;
+			System.out.print("\nRoslina\n");
 		try{
 			Statement statement = connection.createStatement();
 			String createRoslina = "CREATE TABLE [Roslina] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
 				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
 				"Opis VARCHAR(256), "+
 				"idGleba INT NULL CONSTRAINT fk_Gleba REFERENCES [Gleba](Id), "+
-				"idRodzajRoslin INT NULL CONSTRAINT fk_RodzajRoslin REFERENCES [RodzajRoslin](Id), "+
+				"idRodzajRoslin INT NULL CONSTRAINT fk_RodzajeRoslin REFERENCES [RodzajeRoslin](Id), "+
 				"idPoraSadzenia INT NULL CONSTRAINT fk_PoraSadzenia REFERENCES [PoraSadzenia](Id)) ";
+			System.out.print("\nRoslina2\n");
 			ret = statement.executeUpdate(createRoslina);
+			System.out.print("\nRoslina3\n");
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
