@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.sql.*;
 import Gleba.model.*;
 import java.util.*;
+import ViewHelper.*;
 
 public class RoslinaModel extends DataBaseAccess implements ITable
 {
@@ -138,9 +139,10 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		return true;
 	}
 	
-	public ArrayList<String> GetDataList()
+	public Vector<ComboBoxItem> GetDataList()
 	{
-		ArrayList<String> List = new ArrayList<String>();
+		Vector<ComboBoxItem> List = new Vector<ComboBoxItem>();
+		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
 			String query = "SELECT * FROM Roslina";
@@ -148,7 +150,7 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())
 			{
-				List.add(rs.getString("Name"));
+				List.add(new ComboBoxItem(rs.getInt("Id"),rs.getString("Name")));
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.

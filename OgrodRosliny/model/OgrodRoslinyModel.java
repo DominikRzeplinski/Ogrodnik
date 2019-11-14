@@ -1,4 +1,4 @@
-package Ogrod.model;
+package OgrodRosliny.model;
 import java.beans.*;
 import DataBase.Table.ITable;
 import DataBase.Connection.*;
@@ -7,18 +7,16 @@ import java.sql.*;
 import java.util.*;
 import ViewHelper.*;
 
-public class OgrodModel extends DataBaseAccess implements ITable
+public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 {
-	private static String dbTableName = "Ogrod"; 
+	private static String dbTableName = "OgrodRosliny"; 
 	private PropertyChangeSupport support;
 	int id;
-	String nazwa; 
-	String opis; 
-	String miasto; 
-	String ulica; 
-	String nrDomu; 
-	String nrMieszkania; 
-	String kodPocztowy; 
+	int idOgrod;
+	int idRosliny;
+	Date dataSadzenia;
+	int wiekSadzenia;
+	bool zywa;
 	public String GetNazwa(){return nazwa;}
 	public int GetId(){return id;}
 	public String GetOpis(){return opis;}
@@ -34,7 +32,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	public void SetNrDomu(String nrDomu){this.nrDomu = nrDomu;}
 	public void SetNrMieszkania(String nrMieszkania){this.nrMieszkania = nrMieszkania;}
 	public void SetKodPocztowy(String kodPocztowy){this.kodPocztowy = kodPocztowy;}
-	public OgrodModel(){
+	public OgrodRoslinyModel(){
 		CreateTable();
         support = new PropertyChangeSupport(this);
 	}
@@ -52,8 +50,8 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	public boolean DeleteData() {
 		SetConnection();
 		try{
-			String deleteOgrod = "DELETE FROM Ogrod WHERE id = ?";
-			PreparedStatement ps = connection.prepareStatement(deleteOgrod);
+			String deleteOgrodRosliny = "DELETE FROM OgrodRosliny WHERE id = ?";
+			PreparedStatement ps = connection.prepareStatement(deleteOgrodRosliny);
 			ps.setInt(1,this.id);
 			ps.executeUpdate();
 			Reset();
@@ -62,15 +60,15 @@ public class OgrodModel extends DataBaseAccess implements ITable
            // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
-		support.firePropertyChange("Ogrod", "A", "B");
+		support.firePropertyChange("OgrodRosliny", "A", "B");
 		CloseConnection();
 		return true; 
 	}
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertOgrod = "INSERT INTO Ogrod (Name, Opis, Miasto, Ulica, nrDomu, nrMieszkania, KodPocztowy) VALUES (?,?,?,?,?,?,?)";
-			PreparedStatement ps = connection.prepareStatement(insertOgrod,Statement.RETURN_GENERATED_KEYS);
+			String insertOgrodRosliny = "INSERT INTO OgrodRosliny (Name, Opis, Miasto, Ulica, nrDomu, nrMieszkania, KodPocztowy) VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement ps = connection.prepareStatement(insertOgrodRosliny,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1,this.nazwa);
 			ps.setString(2,this.opis);
 			ps.setString(3,this.miasto);
@@ -97,14 +95,14 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		else{
 			SaveData();
 		}
-		support.firePropertyChange("Ogrod", "A", "B");
+		support.firePropertyChange("OgrodRosliny", "A", "B");
 	}
 	
 	public boolean UpdateData() 
 	{
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Ogrod WHERE id = ?";
+			String query = "SELECT * FROM OgrodRosliny WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
 			ps.setInt(1,this.id);
 			ResultSet rs = ps.executeQuery();
@@ -133,7 +131,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		int temp = this.id;
 		Reset();
 		try{
-			String query = "SELECT * FROM Ogrod WHERE id = ?";
+			String query = "SELECT * FROM OgrodRosliny WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
@@ -153,7 +151,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 			System.out.print(exception.toString());
 		}
 		CloseConnection();
-		support.firePropertyChange("OgrodGetData", "a", "b");
+		support.firePropertyChange("OgrodRoslinyGetData", "a", "b");
 		return true;
 	}
  
@@ -170,15 +168,13 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createOgrod = "CREATE TABLE [Ogrod] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
-				"Opis VARCHAR(256), " +
-				"Miasto VARCHAR(32), " +
-				"Ulica VARCHAR(32), " +
-				"nrDomu VARCHAR(32), " +
-				"nrMieszkania VARCHAR(32), " +
-				"KodPocztowy VARCHAR(32)) ";
-			ret = statement.executeUpdate(createOgrod);
+			String createOgrodRosliny = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
+				"idOgrod INT NULL CONSTRAINT fk_Ogrod REFERENCES [Ogrod](Id)) "+
+				"idRosliny INT NULL CONSTRAINT fk_Roslina REFERENCES [Roslina](Id)) "+
+				"DataSadzenia DATETIME, " +
+				"WiekSadzenia INT, " +
+				"Zywa BIT,) ";
+			ret = statement.executeUpdate(createOgrodRosliny);
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
@@ -193,7 +189,7 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Ogrod";
+			String query = "SELECT * FROM OgrodRosliny";
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())

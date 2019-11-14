@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import Roslina.model.RoslinaModel;
 import java.beans.*;
+import ViewHelper.*;
 
 public class RoslinaView extends JFrame implements PropertyChangeListener
 {
@@ -26,13 +27,16 @@ public class RoslinaView extends JFrame implements PropertyChangeListener
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 		tFEdit = new JTextField(model.GetNazwa(),20);
+		tFEdit.setInputVerifier(new InputVerifierLength(50));
 		lNazwa = new JLabel("Nazwa");
 		lOpis = new JLabel("Opis");
 		bSave = new JButton("Zapisz");
+		bSave.setVerifyInputWhenFocusTarget(true);;
 		bCancel = new JButton("Anuluj");
 		lGleba = new JLabel("Gleba");
 		tADescription = new JTextArea(model.GetOpis(),4,20);
-		cbGleba = new JComboBox(model.gleba.GetDataList().toArray());
+		tADescription.setInputVerifier(new InputVerifierLength(256));
+		cbGleba = new JComboBox(model.gleba.GetDataList());
 		JScrollPane SPDescription = new JScrollPane(tADescription);
 		layout.setHorizontalGroup(
 			layout.createSequentialGroup()

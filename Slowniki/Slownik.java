@@ -1,4 +1,4 @@
-package Gleba.model;
+package Slowniki;
 import java.beans.*;
 import DataBase.Table.ITable;
 import DataBase.Connection.*;
@@ -7,25 +7,26 @@ import java.sql.*;
 import java.util.*;
 import ViewHelper.*;
 
-public class GlebaModel extends DataBaseAccess implements ITable
+public class abstract SlownikModel extends DataBaseAccess implements ITable
 {
-	private static String dbTableName = "Gleba"; 
+	private abstract String GetTableName();
 	private PropertyChangeSupport support;
 	int id;
 	String nazwa; 
 	String opis; 
 	public String GetNazwa(){return nazwa;}
 	public String GetOpis(){return opis;}
-	public GlebaModel(){
+	public SlownikModel(){
 		CreateTable();
         support = new PropertyChangeSupport(this);
 	}
 	
 	public boolean DeleteData() {
 		try{
-			String deleteGleba = "DELETE FROM GLEBA WHERE id = ?";
-			PreparedStatement ps = connection.prepareStatement(deleteGleba);
-			ps.setInt(1,this.id);
+			String deleteSlownik = "DELETE FROM ? WHERE id = ?";
+			PreparedStatement ps = connection.prepareStatement(deleteSlownik);
+			ps.setInt(1,this.dbTableName);
+			ps.setInt(2,this.id);
 			ps.executeUpdate();
 		}catch(SQLException exception) 
 		{
@@ -37,10 +38,11 @@ public class GlebaModel extends DataBaseAccess implements ITable
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertGleba = "INSERT INTO GLEBA (Name, Opis) VALUES (?,?)";
-			PreparedStatement ps = connection.prepareStatement(insertGleba,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,this.nazwa);
-			ps.setString(2,this.opis);
+			String insertSlownik = "INSERT INTO ? (Name, Opis) VALUES (?,?)";
+			PreparedStatement ps = connection.prepareStatement(insertSlownik,Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1,this.dbTableName);
+			ps.setString(2,this.nazwa);
+			ps.setString(3,this.opis);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -57,7 +59,7 @@ public class GlebaModel extends DataBaseAccess implements ITable
 		String temp = this.nazwa;
 		this.nazwa = nazwa;
 		this.opis = opis;
-		support.firePropertyChange("Gleba", temp, nazwa);
+		support.firePropertyChange(this.dbTableName, temp, nazwa);
 		if (id > 0){
 			UpdateData();
 		}
@@ -70,9 +72,10 @@ public class GlebaModel extends DataBaseAccess implements ITable
 	{
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Gleba WHERE id = ?";
+			String query = "SELECT * FROM ? WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
-			ps.setInt(1,this.id);
+			ps.setInt(1,this.dbTableName);
+			ps.setInt(2,this.id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
@@ -92,8 +95,9 @@ public class GlebaModel extends DataBaseAccess implements ITable
 	public boolean GetData(int id) {
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Gleba WHERE id = ?";
+			String query = "SELECT * FROM ? WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1,this.dbTableName);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
@@ -120,16 +124,19 @@ public class GlebaModel extends DataBaseAccess implements ITable
 	
 	public boolean CreateTable(){	
 		SetConnection();
-		int ret =0;
-		try{
-			Statement statement = connection.createStatement();
-			String createGleba = "CREATE TABLE [Gleba] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
-				"Opis VARCHAR(256))";
-			ret = statement.executeUpdate(createGleba);
-		}catch(SQLException exception) {
-            // Output exception ClassNotFoundExceptions.
-			System.out.print(exception.toString());
+		if (!this.dbTableName.equals(""))
+		{
+			int ret =0;
+			try{
+				Statement statement = connection.createStatement();
+				String createGleba = "CREATE TABLE [" + this.dbTableName +"] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
+					"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
+					"Opis VARCHAR(256))";
+				ret = statement.executeUpdate(createGleba);
+			}catch(SQLException exception) {
+				// Output exception ClassNotFoundExceptions.
+				System.out.print(exception.toString());
+			}
 		}
 		CloseConnection();
 		return true;
@@ -141,7 +148,7 @@ public class GlebaModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Gleba";
+			String query = "SELECT * FROM " + this.dbTableName;
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())
