@@ -1,4 +1,4 @@
-package Slowniki;
+package Slowniki.model;
 import java.beans.*;
 import DataBase.Table.ITable;
 import DataBase.Connection.*;
@@ -7,13 +7,14 @@ import java.sql.*;
 import java.util.*;
 import ViewHelper.*;
 
-public class abstract SlownikModel extends DataBaseAccess implements ITable
+public abstract class SlownikModel extends DataBaseAccess implements ITable
 {
-	private abstract String GetTableName();
+	public abstract String GetTableName();
 	private PropertyChangeSupport support;
 	int id;
 	String nazwa; 
 	String opis; 
+	public boolean IsNew(){return (this.id ==0);}
 	public String GetNazwa(){return nazwa;}
 	public String GetOpis(){return opis;}
 	public SlownikModel(){
@@ -22,27 +23,28 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 	}
 	
 	public boolean DeleteData() {
+		SetConnection();
 		try{
-			String deleteSlownik = "DELETE FROM ? WHERE id = ?";
+			String deleteSlownik = "DELETE FROM "+GetTableName()+" WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(deleteSlownik);
-			ps.setInt(1,this.dbTableName);
-			ps.setInt(2,this.id);
+			ps.setInt(1,this.id);
 			ps.executeUpdate();
 		}catch(SQLException exception) 
 		{
            // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
+		CloseConnection();
+		support.firePropertyChange(GetTableName(), "A", "B");
 		return true; 
 	}
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertSlownik = "INSERT INTO ? (Name, Opis) VALUES (?,?)";
+			String insertSlownik = "INSERT INTO "+GetTableName()+" (Name, Opis) VALUES (?,?)";
 			PreparedStatement ps = connection.prepareStatement(insertSlownik,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,this.dbTableName);
-			ps.setString(2,this.nazwa);
-			ps.setString(3,this.opis);
+			ps.setString(1,this.nazwa);
+			ps.setString(2,this.opis);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -59,23 +61,22 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 		String temp = this.nazwa;
 		this.nazwa = nazwa;
 		this.opis = opis;
-		support.firePropertyChange(this.dbTableName, temp, nazwa);
 		if (id > 0){
 			UpdateData();
 		}
 		else{
 			SaveData();
 		}
+		support.firePropertyChange(GetTableName(), "A", "B");
 	}
 	
 	public boolean UpdateData() 
 	{
 		SetConnection();
 		try{
-			String query = "SELECT * FROM ? WHERE id = ?";
+			String query = "SELECT * FROM "+GetTableName()+" WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
-			ps.setInt(1,this.dbTableName);
-			ps.setInt(2,this.id);
+			ps.setInt(1,this.id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
@@ -93,11 +94,13 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 	}
 	
 	public boolean GetData(int id) {
+		this.nazwa = "";
+		this.opis = "";
+		this.id = 0;
 		SetConnection();
 		try{
-			String query = "SELECT * FROM ? WHERE id = ?";
+			String query = "SELECT * FROM "+GetTableName()+" WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
-			ps.setInt(1,this.dbTableName);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
@@ -124,12 +127,12 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 	
 	public boolean CreateTable(){	
 		SetConnection();
-		if (!this.dbTableName.equals(""))
+		if (!GetTableName().equals(""))
 		{
 			int ret =0;
 			try{
 				Statement statement = connection.createStatement();
-				String createGleba = "CREATE TABLE [" + this.dbTableName +"] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
+				String createGleba = "CREATE TABLE [" + GetTableName() +"] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
 					"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
 					"Opis VARCHAR(256))";
 				ret = statement.executeUpdate(createGleba);
@@ -148,7 +151,7 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT * FROM " + this.dbTableName;
+			String query = "SELECT * FROM " + GetTableName();
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())
@@ -161,5 +164,37 @@ public class abstract SlownikModel extends DataBaseAccess implements ITable
 		}
 		CloseConnection();
 		return List;
+	}
+	
+	public Vector<String> GetDataTableColumnsNames(){
+		Vector<String> names = new Vector<String>(); 
+		names.add("Id");
+		names.add("Nazwa");
+		names.add("Opis");
+		return names;
+	}
+	
+	public Vector<Vector<String>> GetDataTableList()
+	{
+		Vector<Vector<String>> list = new Vector<Vector<String>>();
+		SetConnection();
+		try{
+			String query = "SELECT * FROM " + GetTableName();
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+			while(rs.next())
+			{
+				Vector<String> row = new Vector<String>();
+				row.add(String.valueOf(rs.getInt("Id")));
+				row.add(rs.getString("Name"));
+				row.add(rs.getString("Opis"));
+				list.add(row);
+			}
+		}catch(SQLException exception) {
+            // Output exception ClassNotFoundExceptions.
+			System.out.print(exception.toString());
+		}
+		CloseConnection();
+		return list;
 	}
 }

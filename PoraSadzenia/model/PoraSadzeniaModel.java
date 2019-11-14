@@ -1,4 +1,4 @@
-package Gleba.model;
+package PoraSadzenia.model;
 import java.beans.*;
 import DataBase.Table.ITable;
 import DataBase.Connection.*;
@@ -9,10 +9,10 @@ import ViewHelper.*;
 import Slowniki.model.*;
 
 
-public class GlebaModel extends SlownikModel
+public class PoraSadzeniaModel extends SlownikModel
 {
-	public String GetTableName(){return "Gleba";} 
-	public GlebaModel(){
+	public String GetTableName(){return "PoraSadzenia";} 
+	public PoraSadzeniaModel(){
 		super();
 	}
 }

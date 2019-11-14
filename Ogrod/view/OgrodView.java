@@ -28,7 +28,13 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 	private JLabel lNrMieszkania;
 	private JLabel lKodPocztowy;
 	private JComboBox cbOgrod; 
-	
+	private JMenuBar mb;
+	private JMenu mSlowniki;
+	private JMenu mRosliny;
+	private JMenuItem mIGleby;
+	private JMenuItem mIRodzaje;
+	private JMenuItem mIPoraSadzenia;
+	private JMenuItem mIListaRosliny;
 	
 	public OgrodView(OgrodModel model){
 		this.model = model;
@@ -144,11 +150,35 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 					.addComponent(bDelete)));
 				
 		pack();
-		setSize(620,260);
+		setSize(620,300);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		createJMenu();
 		setVisible(true);
 	};
+	
+	private void createJMenu()
+	{
+		mb = new JMenuBar();
+		setJMenuBar(mb);
+		
+		mSlowniki = new JMenu("Slowniki");
+		mb.add(mSlowniki);
+		mIGleby = new JMenuItem("Gleby");
+		mSlowniki.add(mIGleby);
+		mSlowniki.addSeparator();
+		mIRodzaje = new JMenuItem("Rodzaje");
+		mSlowniki.add(mIRodzaje);
+		mSlowniki.addSeparator();
+		mIPoraSadzenia = new JMenuItem("Pora sadzenia");
+		mSlowniki.add(mIPoraSadzenia);
+		mSlowniki.addSeparator();
+		
+		mRosliny = new JMenu("Rosliny");
+		mb.add(mRosliny);
+		mIListaRosliny = new JMenuItem("Lista");
+		mRosliny.add(mIListaRosliny);
+	}
 	
 	public String GetTFNazwa(){
 		return tFNazwa.getText();
@@ -183,6 +213,19 @@ public class OgrodView extends JFrame implements PropertyChangeListener
         JOptionPane.showMessageDialog(this, errMessage);
     }
 	
+	public void AddMenuListaRoslinActionListener(ActionListener al){
+		mIListaRosliny.addActionListener(al);
+	}
+	public void AddMenuPoraSadzeniaActionListener(ActionListener al){
+		mIPoraSadzenia.addActionListener(al);
+	}
+	public void AddMenuRodzajeRoslinActionListener(ActionListener al){
+		mIRodzaje.addActionListener(al);
+	}
+	public void AddMenuGlebyActionListener(ActionListener al){
+		mIGleby.addActionListener(al);
+	}
+	
 	public void AddSaveActionListener(ActionListener al){
 		bSave.addActionListener(al);
 	}
@@ -194,7 +237,6 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 	public void AddDeleteActionListener(ActionListener al){
 		bDelete.addActionListener(al);
 	}
-	
 	public void AddDetailsActionListener(ActionListener al){
 		bDetails.addActionListener(al);
 	}

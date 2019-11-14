@@ -1,13 +1,13 @@
-package Roslina.controler;
-import Roslina.model.RoslinaModel;
-import Roslina.view.RoslinaView;
+package Slowniki.controler;
+import Slowniki.model.SlownikModel;
+import Slowniki.view.SlownikView;
 import java.awt.event.*;
 
-public class RoslinaControler{
-	private RoslinaModel model;
-    private RoslinaView view;
+public class SlownikControler{
+	private SlownikModel model;
+    private SlownikView view;
     
-    public RoslinaControler(RoslinaModel model, RoslinaView view){
+    public SlownikControler(SlownikModel model, SlownikView view){
         this.model = model;
         this.view = view;
 		view.AddSaveActionListener(new SaveListener());
@@ -18,24 +18,21 @@ public class RoslinaControler{
     {
         public void actionPerformed(ActionEvent e) {
             try {
-                model.SetNazwa(view.GetTFEdit());
-                model.SetOpis(view.GetTADescription());
-				model.SetIdGleby(view.GetCBGleba());
-				model.SetIdRodzaj(view.GetCBRodzaj());
-				model.SetIdPoraSadzenia(view.GetCBPoraSadzenia());
-                model.Update();
-                view.dispose();
+                String nazwa = view.GetTFEdit();
+                String opis = view.GetTADescription();
+                model.Update(nazwa,opis);
                 
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: '" + view.GetTFEdit() + "'");
             }
+			view.dispose();
         }
     }
 	public class CancelListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-                view.dispose();
+				view.dispose();
                 
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: '" + view.GetTFEdit() + "'");

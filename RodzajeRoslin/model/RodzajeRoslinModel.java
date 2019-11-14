@@ -6,13 +6,13 @@ import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
 import ViewHelper.*;
-import Slowniki.*;
+import Slowniki.model.*;
 
-public class RodzajeRoslinModel extends Slowniki
+
+public class RodzajeRoslinModel extends SlownikModel
 {
-	private String String GetTableName(){return "RodzajeRoslin";} 
+	public String GetTableName(){return "RodzajeRoslin";} 
 	public RodzajeRoslinModel(){
 		super();
-		
 	}
 }
