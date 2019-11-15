@@ -1,26 +1,26 @@
-package ogrodRosliny.controler;
-import ogrodRosliny.model.OgrodRoslinyModel;
-import ogrodRosliny.view.OgrodRoslinyView;
+package roslinaPraceOgrodowe.controler;
+import roslinaPraceOgrodowe.model.RoslinaPraceOgrodoweModel;
+import roslinaPraceOgrodowe.view.RoslinaPraceOgrodoweView;
 import java.awt.event.*;
 
-public class OgrodRoslinyControler{
-	private OgrodRoslinyModel model;
-    private OgrodRoslinyView view;
+public class RoslinaPraceOgrodoweControler{
+	private RoslinaPraceOgrodoweModel model;
+    private RoslinaPraceOgrodoweView view;
     
-    public OgrodRoslinyControler(OgrodRoslinyModel model, OgrodRoslinyView view){
+    public RoslinaPraceOgrodoweControler(RoslinaPraceOgrodoweModel model, RoslinaPraceOgrodoweView view){
         this.model = model;
         this.view = view;
 		view.AddSaveActionListener(new SaveListener());
 		view.AddCancelActionListener(new CancelListener());
 		view.AddCancelActionListener(new CancelListener());
-		view.AddCBRoslinaActionListener(new CBRoslinaListener());
+		view.AddCBPraceOgrodoweActionListener(new CBPraceOgrodoweListener());
 		view.Show();
     }
 	public class SaveListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-				model.SetIdRosliny(view.GetCBRoslina());
+				model.SetIdPraceOgrodowe(view.GetCBPracaOgrodowa());
 				model.SetIlosc(view.GetTFIlosc());
                 model.Update();
                 view.dispose();
@@ -41,11 +41,11 @@ public class OgrodRoslinyControler{
             }
         }
     }
-	public class CBRoslinaListener implements ActionListener
+	public class CBPraceOgrodoweListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-				model.roslina.GetData(view.GetCBRoslina());
+				model.praceOgrodowe.GetData(view.GetCBPracaOgrodowa());
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: '");
             }

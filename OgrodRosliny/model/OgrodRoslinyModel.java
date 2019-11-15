@@ -1,12 +1,12 @@
-package OgrodRosliny.model;
+package ogrodRosliny.model;
 import java.beans.*;
-import DataBase.Table.ITable;
-import DataBase.Connection.*;
+import dataBase.table.ITable;
+import dataBase.connection.*;
 import java.sql.Statement;
 import java.sql.*;
-import Roslina.model.*;
+import roslina.model.*;
 import java.util.*;
-import ViewHelper.*;
+import viewHelper.*;
 
 public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 {

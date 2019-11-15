@@ -1,9 +1,9 @@
-package Slowniki.view;
+package slowniki.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Slowniki.model.*;
+import slowniki.model.*;
 import java.beans.*;
-import ViewHelper.*;
+import viewHelper.*;
 import java.awt.Dialog.*;
 import java.awt.*;
 

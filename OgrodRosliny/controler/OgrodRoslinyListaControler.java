@@ -1,7 +1,7 @@
-package OgrodRosliny.controler;
-import OgrodRosliny.model.*;
-import OgrodRosliny.view.*;
-import OgrodRosliny.controler.*;
+package ogrodRosliny.controler;
+import ogrodRosliny.model.*;
+import ogrodRosliny.view.*;
+import ogrodRosliny.controler.*;
 import java.awt.event.*;
 
 public class OgrodRoslinyListaControler{

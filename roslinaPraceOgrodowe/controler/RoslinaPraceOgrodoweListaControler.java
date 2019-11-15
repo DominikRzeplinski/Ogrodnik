@@ -1,20 +1,21 @@
-package roslina.controler;
-import roslina.model.*;
-import roslina.view.*;
-import roslina.controler.*;
+package roslinaPraceOgrodowe.controler;
+import roslinaPraceOgrodowe.model.*;
+import roslinaPraceOgrodowe.view.*;
+import roslinaPraceOgrodowe.controler.*;
 import java.awt.event.*;
 
-public class RoslinaListaControler{
-	private RoslinaModel model;
-    private RoslinaListaView view;
+public class RoslinaPraceOgrodoweListaControler{
+	private RoslinaPraceOgrodoweModel model;
+    private RoslinaPraceOgrodoweListaView view;
     
-    public RoslinaListaControler(RoslinaModel model, RoslinaListaView view){
+    public RoslinaPraceOgrodoweListaControler(RoslinaPraceOgrodoweModel model, RoslinaPraceOgrodoweListaView view){
         this.model = model;
         this.view = view;
 		view.AddCancelActionListener(new CancelListener());
 		view.AddAddActionListener(new AddListener());
 		view.AddEditActionListener(new EditListener());
 		view.AddRemoveActionListener(new RemoveListener());
+		view.Show();
     }
     
 	public class AddListener implements ActionListener
@@ -22,8 +23,8 @@ public class RoslinaListaControler{
         public void actionPerformed(ActionEvent e) {
             try {
 				model.GetData(0);
-                RoslinaView sView = new RoslinaView(model);
-				RoslinaControler sControler = new RoslinaControler(model,sView);
+                RoslinaPraceOgrodoweView sView = new RoslinaPraceOgrodoweView(model);
+				RoslinaPraceOgrodoweControler sControler = new RoslinaPraceOgrodoweControler(model,sView);
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input:'");
             }
@@ -35,8 +36,8 @@ public class RoslinaListaControler{
         public void actionPerformed(ActionEvent e) {
             try {
 				model.GetData(view.GetSelectedId());
-                RoslinaView sView = new RoslinaView(model);
-				RoslinaControler sControler = new RoslinaControler(model,sView);
+                RoslinaPraceOgrodoweView sView = new RoslinaPraceOgrodoweView(model);
+				RoslinaPraceOgrodoweControler sControler = new RoslinaPraceOgrodoweControler(model,sView);
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: ");
             }

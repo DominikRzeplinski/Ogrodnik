@@ -1,7 +1,10 @@
-package Roslina.controler;
-import Roslina.model.RoslinaModel;
-import Roslina.view.RoslinaView;
+package roslina.controler;
+import roslina.model.RoslinaModel;
+import roslina.view.RoslinaView;
 import java.awt.event.*;
+import roslinaPraceOgrodowe.model.*;
+import roslinaPraceOgrodowe.view.*;
+import roslinaPraceOgrodowe.controler.*;
 
 public class RoslinaControler{
 	private RoslinaModel model;
@@ -12,6 +15,7 @@ public class RoslinaControler{
         this.view = view;
 		view.AddSaveActionListener(new SaveListener());
 		view.AddCancelActionListener(new CancelListener());
+		view.AddPraceOgrodoweActionListener(new PraceOgrodoweListener());
 		view.Show();
     }
 	public class SaveListener implements ActionListener
@@ -37,6 +41,20 @@ public class RoslinaControler{
             try {
                 view.dispose();
                 
+            } catch (NumberFormatException nfex) {
+                view.showError("Bad input: '" + view.GetTFEdit() + "'");
+            }
+        }
+    }
+	public class PraceOgrodoweListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                if (model.GetId() ==0)
+					return; 
+                RoslinaPraceOgrodoweModel m = new RoslinaPraceOgrodoweModel(model.GetId());
+                RoslinaPraceOgrodoweListaView v = new RoslinaPraceOgrodoweListaView(m);
+                RoslinaPraceOgrodoweListaControler c = new RoslinaPraceOgrodoweListaControler(m,v);
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: '" + view.GetTFEdit() + "'");
             }

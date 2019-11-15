@@ -1,11 +1,11 @@
-package Ogrod.model;
+package ogrod.model;
 import java.beans.*;
-import DataBase.Table.ITable;
-import DataBase.Connection.*;
+import dataBase.table.ITable;
+import dataBase.connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
-import ViewHelper.*;
+import viewHelper.*;
 
 public class OgrodModel extends DataBaseAccess implements ITable
 {
@@ -50,6 +50,8 @@ public class OgrodModel extends DataBaseAccess implements ITable
 	}
 	
 	public boolean DeleteData() {
+		if (this.id ==0)
+			return true;
 		SetConnection();
 		try{
 			String deleteOgrod = "DELETE FROM Ogrod WHERE id = ?";
@@ -67,6 +69,8 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		return true; 
 	}
 	public boolean SaveData() {
+		if (this.nazwa.equals(""))
+			return true;
 		SetConnection();
 		try{
 			String insertOgrod = "INSERT INTO Ogrod (Name, Opis, Miasto, Ulica, nrDomu, nrMieszkania, KodPocztowy) VALUES (?,?,?,?,?,?,?)";

@@ -1,31 +1,32 @@
-package slowniki.view;
+package roslinaPraceOgrodowe.view;
 import javax.swing.*;
 import java.awt.event.*;
-import slowniki.model.*;
+import roslinaPraceOgrodowe.model.*;
 import java.beans.*;
-import viewHelper.*;
 import java.awt.*;
+import viewHelper.*;
 import javax.swing.table.*;
-/** klasa widoku prezentująca liste slownikowa
+
+/** klasa widoku prezentująca liste prac ogrodowych dla danej rosliny
  *@author Dominik Rzepliński
  *@version 1.0
  *@since v1.0
  */
-public class SlownikListaView extends JFrame implements PropertyChangeListener
+public class RoslinaPraceOgrodoweListaView extends JDialog implements PropertyChangeListener
 {
 	private JList lList;
-	private JTable tTable;
+	public JTable tTable;
 	private ListSelectionModel lsmTable;
-	private SlownikModel model;
+	private RoslinaPraceOgrodoweModel model;
 	private JButton bAdd; 
 	private JButton bEdit;
 	private JButton bRemove;
 	private JButton bCancel;
 	
-/** konstruktor widoku listy slownikowej
-  *@param model - renderowany slownik
+/** konstruktor widoku prac ogrodowych
+  *@param model - renderowane prace ogrodowe
  */
-	public SlownikListaView(SlownikModel model){
+	public RoslinaPraceOgrodoweListaView(RoslinaPraceOgrodoweModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
 		
@@ -47,9 +48,9 @@ public class SlownikListaView extends JFrame implements PropertyChangeListener
 		bCancel.setSize(40,40);
 		bCancel.setPreferredSize(new Dimension(80, 30));
 		
-		tTable = new JTable(model.GetDataTableList(),model.GetDataTableColumnsNames());
-		tTable.removeColumn(tTable.getColumnModel().getColumn(0));
+		tTable = new JTable();
 		tTable.setDefaultEditor(Object.class, null);
+		SetTableData();
 		JScrollPane tablePane = new JScrollPane(tTable);
 		
 		layout.setHorizontalGroup(
@@ -75,11 +76,24 @@ public class SlownikListaView extends JFrame implements PropertyChangeListener
 		setTitle(model.GetTableName() + " - Lista");
 		setSize(400,400);
 		setResizable(false);
-		setVisible(true);
+		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	};
 	
-/** metoda zwraca id wybranej wartosci slownikowej
- *@return  id
+/** metoda wyswietlajaca dialog
+ */
+	public void Show(){
+		setVisible(true);
+	}
+/** metoda odswierza dane w tabeli
+ */
+	public void SetTableData(){
+		DefaultTableModel tModel = new DefaultTableModel(model.GetDataTableList(),model.GetDataTableColumnsNames());
+		tTable.setModel(tModel);
+		tTable.removeColumn(tTable.getColumnModel().getColumn(0));
+		((AbstractTableModel)tTable.getModel()).fireTableDataChanged();
+	}
+/** metoda zwraca id wybranej pracy ogrodowej dla rosliny
+ *@return  idPracyOgrodowejDlaRosliny
  */
 	public int GetSelectedId(){
 		String id = (String)tTable.getModel().getValueAt(tTable.getSelectedRow(),0);
@@ -128,10 +142,7 @@ public class SlownikListaView extends JFrame implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent evt) {
 		if (model.GetTableName().equals(evt.getPropertyName()))
 		{
-			DefaultTableModel tModel = new DefaultTableModel(model.GetDataTableList(),model.GetDataTableColumnsNames());
-			tTable.setModel(tModel);
-			tTable.removeColumn(tTable.getColumnModel().getColumn(0));
-			((AbstractTableModel)tTable.getModel()).fireTableDataChanged();
+			SetTableData();
 		}
     }
 }

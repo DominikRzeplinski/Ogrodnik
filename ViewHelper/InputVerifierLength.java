@@ -1,4 +1,4 @@
-package ViewHelper;
+package viewHelper;
 import javax.swing.InputVerifier;
 import javax.swing.text.JTextComponent;
 import javax.swing.JComponent;

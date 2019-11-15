@@ -1,4 +1,4 @@
-package DataBase.Connection;
+package dataBase.connection;
 import java.sql.*;
 
 /** interfejs dla baz danych

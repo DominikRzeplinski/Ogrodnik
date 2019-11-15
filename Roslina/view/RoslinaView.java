@@ -1,9 +1,9 @@
-package Roslina.view;
+package roslina.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Roslina.model.RoslinaModel;
+import roslina.model.RoslinaModel;
 import java.beans.*;
-import ViewHelper.*;
+import viewHelper.*;
 import java.awt.Dialog.*;
 import java.awt.*;
 
@@ -18,6 +18,7 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 	private JTextArea tADescription;
 	private JButton bSave;
 	private JButton bCancel;
+	private JButton bPraceOgrodowe;
 	private RoslinaModel model;
 	private JLabel lNazwa;
 	private JLabel lOpis;
@@ -46,6 +47,7 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 		lNazwa = new JLabel("Nazwa");
 		lOpis = new JLabel("Opis");
 		bSave = new JButton("Zapisz");
+		bPraceOgrodowe = new JButton("Prace ogrodowe");
 		bSave.setVerifyInputWhenFocusTarget(true);
 		bCancel = new JButton("Anuluj");
 		lGleba = new JLabel("Gleba");
@@ -71,7 +73,8 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 					.addComponent(tFEdit)
 					.addComponent(cbGleba)
 					.addComponent(cbRodzaj)
-					.addComponent(cbPoraSadzenia))
+					.addComponent(cbPoraSadzenia)
+					.addComponent(bPraceOgrodowe))
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addComponent(lOpis))
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -100,6 +103,7 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 								.addComponent(cbPoraSadzenia))))
 					.addComponent(SPDescription))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					.addComponent(bPraceOgrodowe)
 					.addComponent(bSave)
 					.addComponent(bCancel)));
 				
@@ -197,6 +201,13 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
+	
+/** metoda dodaje klasę nasłuchującą dla przycisku Prace ogrodowe
+ *@param al ActionListener
+ */
+	public void AddPraceOgrodoweActionListener(ActionListener al){
+		bPraceOgrodowe.addActionListener(al);
+	}
 	
 /** metoda dodaje klasę nasłuchującą dla przycisku Zapisz
  *@param al ActionListener

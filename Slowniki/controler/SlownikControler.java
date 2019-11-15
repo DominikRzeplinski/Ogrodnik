@@ -1,6 +1,6 @@
-package Slowniki.controler;
-import Slowniki.model.SlownikModel;
-import Slowniki.view.SlownikView;
+package slowniki.controler;
+import slowniki.model.SlownikModel;
+import slowniki.view.SlownikView;
 import java.awt.event.*;
 
 public class SlownikControler{

@@ -1,10 +1,10 @@
-package Roslina.view;
+package roslina.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Roslina.model.*;
+import roslina.model.*;
 import java.beans.*;
 import java.awt.*;
-import ViewHelper.*;
+import viewHelper.*;
 import javax.swing.table.*;
 /** klasa widoku prezentująca liste roslin 
  *@author Dominik Rzepliński

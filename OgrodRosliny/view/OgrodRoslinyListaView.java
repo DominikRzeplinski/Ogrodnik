@@ -1,10 +1,10 @@
-package OgrodRosliny.view;
+package ogrodRosliny.view;
 import javax.swing.*;
 import java.awt.event.*;
-import OgrodRosliny.model.*;
+import ogrodRosliny.model.*;
 import java.beans.*;
 import java.awt.*;
-import ViewHelper.*;
+import viewHelper.*;
 import javax.swing.table.*;
 
 /** klasa widoku prezentująca liste roslin w danym ogrodzie

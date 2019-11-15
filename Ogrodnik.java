@@ -18,9 +18,10 @@ public class Ogrodnik
  */
  public Ogrodnik()
  {}
-/** Metoda startowa programu. 
+/** Metoda startowa programu.
+ *@param args nie uzywany
  */
-  public static void main(){
+  public static void main(String[] args){
 	  
 	DataBaseAccess.CreateDataBaseAccess();
 	/** Model */

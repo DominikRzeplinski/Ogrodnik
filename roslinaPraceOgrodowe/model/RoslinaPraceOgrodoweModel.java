@@ -1,45 +1,36 @@
-package roslina.model;
+package roslinaPraceOgrodowe.model;
 import java.beans.*;
 import dataBase.table.ITable;
 import dataBase.connection.*;
 import java.sql.Statement;
 import java.sql.*;
-import gleba.model.*;
-import rodzajeRoslin.model.*;
-import poraSadzenia.model.*;
+import roslina.model.*;
+import praceOgrodowe.model.*;
 import java.util.*;
 import viewHelper.*;
 
-public class RoslinaModel extends DataBaseAccess implements ITable
+public class RoslinaPraceOgrodoweModel extends DataBaseAccess implements ITable
 {
-	public GlebaModel gleba; 
-	public RodzajeRoslinModel rodzajeRoslin; 
-	public PoraSadzeniaModel poraSadzenia; 
-	public String GetTableName(){return "Roslina";} 
+	public PraceOgrodoweModel praceOgrodowe; 
+	public String GetTableName(){return "RoslinaPraceOgrodowe";} 
 	private PropertyChangeSupport support;
 	int id;
-	int idGleby;
-	int idPoraSadzenia;
-	int idRodzaj;
+	int idRosliny;
+	int idPraceOgrodowe;
+	int ilosc;
 	String nazwa; 
 	String opis; 
 	public String GetNazwa(){return nazwa;}
+	public int GetIlosc(){return ilosc;}
 	public String GetOpis(){return opis;}
-	public int GetId(){return id;}
-	public int GetIdGleby(){return idGleby;}
-	public int GetIdRodzaj(){return idRodzaj;}
-	public int GetIdPoraSadzenia(){return idPoraSadzenia;}
-	public void SetNazwa(String nazwa){this.nazwa = nazwa;}
-	public void SetOpis(String opis){this.opis = opis;}
-	public void SetIdGleby(int idGleby){this.idGleby = idGleby;}
-	public void SetIdRodzaj(int idRodzaj){this.idRodzaj = idRodzaj;}
-	public void SetIdPoraSadzenia(int idPoraSadzenia){this.idPoraSadzenia = idPoraSadzenia;}
-	public RoslinaModel(){
+	public int GetIdPraceOgrodowe(){return idPraceOgrodowe;}
+	public void SetIdPraceOgrodowe(int idPraceOgrodowe){this.idPraceOgrodowe = idPraceOgrodowe;}
+	public void SetIlosc(int ilosc){this.ilosc = ilosc;}
+	public RoslinaPraceOgrodoweModel(int idRosliny){
+		this.idRosliny = idRosliny;
+		praceOgrodowe = new PraceOgrodoweModel();
 		CreateTable();
         support = new PropertyChangeSupport(this);
-		gleba = new GlebaModel();
-		rodzajeRoslin = new RodzajeRoslinModel();
-		poraSadzenia = new PoraSadzeniaModel();
 		Reset();
 	}
 	
@@ -51,15 +42,14 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		this.id=0;
 		this.nazwa=" ";
 		this.opis=" ";
-		this.idGleby=0;
-		this.idRodzaj=0;
-		this.idPoraSadzenia=0;
+		this.idPraceOgrodowe=0;
+		this.ilosc=0;
 	}
 	
 	public boolean DeleteData() {
 		SetConnection();
 		try{
-			String deleteRoslina = "DELETE FROM Roslina WHERE id = ?";
+			String deleteRoslina = "DELETE FROM RoslinaPraceOgrodowe WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(deleteRoslina);
 			ps.setInt(1,this.id);
 			ps.executeUpdate();
@@ -70,28 +60,17 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		}
 		CloseConnection();
 		Reset();
-		support.firePropertyChange("Roslina", "A", "B");
+		support.firePropertyChange("RoslinaPraceOgrodowe", "A", "B");
 		return true; 
 	}
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertRoslina = "INSERT INTO Roslina (Name, Opis, idGleba, idRodzajRoslin, idPoraSadzenia) VALUES (?,?,?,?,?)";
-			PreparedStatement ps = connection.prepareStatement(insertRoslina,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,this.nazwa);
-			ps.setString(2,this.opis);
-			if (this.idGleby != 0)
-				ps.setInt(3,this.idGleby);
-			else
-				ps.setNull(3,Types.INTEGER);
-			if (this.idGleby != 0)
-				ps.setInt(4,this.idRodzaj);
-			else
-				ps.setNull(4,Types.INTEGER);
-			if (this.idGleby != 0)
-				ps.setInt(5,this.idPoraSadzenia);
-			else
-				ps.setNull(5,Types.INTEGER);
+			String insertOgrodRosliny = "INSERT INTO RoslinaPraceOgrodowe (idRosliny, idPraceOgrodowe, ilosc) VALUES (?,?,?)";
+			PreparedStatement ps = connection.prepareStatement(insertOgrodRosliny,Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1,this.idRosliny);
+			ps.setInt(2,this.idPraceOgrodowe);
+			ps.setInt(3,this.ilosc);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -111,33 +90,21 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		else{
 			SaveData();
 		}
-		support.firePropertyChange("Roslina", "A", "B");
+		support.firePropertyChange("RoslinaPraceOgrodowe", "A", "B");
 	}
 	
 	public boolean UpdateData() 
 	{
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Roslina WHERE id = ?";
+			String query = "SELECT * FROM RoslinaPraceOgrodowe WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
 			ps.setInt(1,this.id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				rs.updateString("Name", this.nazwa);
-				rs.updateString("Opis", this.opis);
-				if (this.idGleby != 0)
-					rs.updateInt("idGleba", this.idGleby);
-				else
-					rs.updateNull("idGleba");
-				if (this.idRodzaj != 0)
-					rs.updateInt("idRodzajRoslin", this.idRodzaj);
-				else
-					rs.updateNull("idRodzajRoslin");
-				if (this.idPoraSadzenia != 0)
-					rs.updateInt("idPoraSadzenia", this.idPoraSadzenia);
-				else
-					rs.updateNull("idPoraSadzenia");
+				rs.updateInt("idPraceOgrodowe", this.idPraceOgrodowe);
+				rs.updateInt("ilosc", this.ilosc);
 				rs.updateRow();
 			}
 		}catch(SQLException exception) 
@@ -153,7 +120,8 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		SetConnection();
 		Reset();
 		try{
-			String query = "SELECT * FROM Roslina WHERE id = ?";
+			String query = "SELECT ogr.Id, ogr.idPraceOgrodowe, ogr.ilosc, po.Name, po.Opis  FROM RoslinaPraceOgrodowe ogr " +
+			" INNER JOIN PraceOgrodowe po ON po.id = ogr.idPraceOgrodowe WHERE ogr.id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
@@ -162,28 +130,28 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				this.nazwa = rs.getString("Name");
 				this.opis = rs.getString("Opis");
 				this.id = rs.getInt("Id");
-				this.idGleby = rs.getInt("idGleba");
-				this.idRodzaj = rs.getInt("idRodzajRoslin");
-				this.idPoraSadzenia = rs.getInt("idPoraSadzenia");
+				this.idPraceOgrodowe = rs.getInt("idPraceOgrodowe");
+				this.ilosc = rs.getInt("ilosc");
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
-		this.gleba.GetData(this.idGleby);
-		this.rodzajeRoslin.GetData(this.idRodzaj);
-		this.poraSadzenia.GetData(this.idPoraSadzenia);
+		this.praceOgrodowe.GetData(this.idPraceOgrodowe);
+		
 		CloseConnection();
-		support.firePropertyChange("Roslina", "A", "B");
+		support.firePropertyChange("RoslinaPraceOgrodowe", "A", "B");
 		return true;
 	}
  
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
+		praceOgrodowe.addPropertyChangeListener(pcl);
     }
  
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
+		praceOgrodowe.removePropertyChangeListener(pcl);
     }
 	
 	public boolean CreateTable(){	
@@ -191,12 +159,10 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createRoslina = "CREATE TABLE [Roslina] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
-				"Opis VARCHAR(256), "+
-				"idGleba INT NULL CONSTRAINT fk_Gleba REFERENCES [Gleba](Id), "+
-				"idRodzajRoslin INT NULL CONSTRAINT fk_RodzajeRoslin REFERENCES [RodzajeRoslin](Id), "+
-				"idPoraSadzenia INT NULL CONSTRAINT fk_PoraSadzenia REFERENCES [PoraSadzenia](Id)) ";
+			String createRoslina = "CREATE TABLE [RoslinaPraceOgrodowe] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
+				"idRosliny INT NULL CONSTRAINT fk_Rosliny REFERENCES [Roslina](Id), "+
+				"idPraceOgrodowe INT NULL CONSTRAINT fk_PraceOgrodowe REFERENCES [PraceOgrodowe](Id), "+
+				"ilosc INT NULL) ";
 			ret = statement.executeUpdate(createRoslina);
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
@@ -212,9 +178,10 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Roslina";
-			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery(query);
+			String query = "SELECT ogr.Id, ogr.idRosliny, ogr.ilosc, r.Name, r.Opis  FROM RoslinaPraceOgrodowe ogr INNER JOIN PraceOgrodowe r ON r.id = ogr.idPraceOgrodowe WHERE ogr.idRosliny = ? ";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1,idRosliny);
+			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
 				List.add(new ComboBoxItem(rs.getInt("Id"),rs.getString("Name")));
@@ -232,9 +199,7 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		names.add("Id");
 		names.add("Nazwa");
 		names.add("Opis");
-		names.add("Rodzaj");
-		names.add("Gleba");
-		names.add("Pora Sadzenia");
+		names.add("Ilosc");
 		return names;
 	}
 	
@@ -243,21 +208,17 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		Vector<Vector<String>> list = new Vector<Vector<String>>();
 		SetConnection();
 		try{
-			String query = "SELECT r.Id, r.Name, r.Opis, g.Name AS Gleba, p.Name AS Pora, rr.Name AS Rodzaj FROM Roslina r "+
-			" LEFT OUTER JOIN Gleba g ON g.id = r.idGleba "+
-			" LEFT OUTER JOIN PoraSadzenia p ON p.id = r.idPoraSadzenia "+
-			" LEFT OUTER JOIN RodzajeRoslin rr ON rr.id = r.idRodzajRoslin ";
-			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery(query);
+			String query = "SELECT ogr.Id, ogr.idRosliny, ogr.ilosc, r.Name, r.Opis  FROM RoslinaPraceOgrodowe ogr INNER JOIN PraceOgrodowe r ON r.id = ogr.idPraceOgrodowe WHERE ogr.idRosliny = ? ";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1,idRosliny);
+			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
 				Vector<String> row = new Vector<String>();
 				row.add(String.valueOf(rs.getInt("Id")));
 				row.add(rs.getString("Name"));
 				row.add(rs.getString("Opis"));
-				row.add(rs.getString("Rodzaj"));
-				row.add(rs.getString("Gleba"));
-				row.add(rs.getString("Pora"));
+				row.add(rs.getString("ilosc"));
 				list.add(row);
 			}
 		}catch(SQLException exception) {

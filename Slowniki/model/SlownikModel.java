@@ -1,11 +1,11 @@
-package Slowniki.model;
+package slowniki.model;
 import java.beans.*;
-import DataBase.Table.ITable;
-import DataBase.Connection.*;
+import dataBase.Table.ITable;
+import dataBase.Connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
-import ViewHelper.*;
+import viewHelper.*;
 
 public abstract class SlownikModel extends DataBaseAccess implements ITable
 {

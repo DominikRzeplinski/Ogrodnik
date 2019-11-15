@@ -1,4 +1,4 @@
-package poraSadzenia.model;
+package praceOgrodowe.model;
 import java.beans.*;
 import dataBase.table.ITable;
 import dataBase.connection.*;
@@ -9,10 +9,10 @@ import viewHelper.*;
 import slowniki.model.*;
 
 
-public class PoraSadzeniaModel extends SlownikModel
+public class PraceOgrodoweModel extends SlownikModel
 {
-	public String GetTableName(){return "PoraSadzenia";} 
-	public PoraSadzeniaModel(){
+	public String GetTableName(){return "PraceOgrodowe";} 
+	public PraceOgrodoweModel(){
 		super();
 	}
 }

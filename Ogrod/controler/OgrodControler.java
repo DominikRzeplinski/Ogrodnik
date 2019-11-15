@@ -1,19 +1,20 @@
-package Ogrod.controler;
-import Ogrod.model.OgrodModel;
-import Ogrod.view.OgrodView;
+package ogrod.controler;
+import ogrod.model.OgrodModel;
+import ogrod.view.OgrodView;
 import java.awt.event.*;
-import Slowniki.model.*;
-import Slowniki.view.*;
-import Slowniki.controler.*;
-import Gleba.model.*;
-import RodzajeRoslin.model.*;
-import PoraSadzenia.model.*;
-import Roslina.model.*;
-import Roslina.view.*;
-import Roslina.controler.*;
-import OgrodRosliny.model.*;
-import OgrodRosliny.view.*;
-import OgrodRosliny.controler.*;
+import slowniki.model.*;
+import slowniki.view.*;
+import slowniki.controler.*;
+import gleba.model.*;
+import rodzajeRoslin.model.*;
+import poraSadzenia.model.*;
+import roslina.model.*;
+import roslina.view.*;
+import roslina.controler.*;
+import ogrodRosliny.model.*;
+import ogrodRosliny.view.*;
+import ogrodRosliny.controler.*;
+import praceOgrodowe.model.*;
 
 public class OgrodControler{
 	private OgrodModel model;
@@ -31,6 +32,7 @@ public class OgrodControler{
 		view.AddMenuRodzajeRoslinActionListener(new MenuRodzajeRoslinActionListener());
 		view.AddMenuPoraSadzeniaActionListener(new MenuPoraSadzeniaActionListener());
 		view.AddMenuListaRoslinActionListener(new MenuListaRoslinActionListener());
+		view.AddMenuPraceOgrodoweActionListener(new MenuPraceOgrodoweActionListener());
     }
 	public class SaveListener implements ActionListener
     {
@@ -89,6 +91,8 @@ public class OgrodControler{
     {
         public void actionPerformed(ActionEvent e) {
             try {
+				if (view.GetCBOgrod() ==0)
+					return;
                 OgrodRoslinyModel model = new OgrodRoslinyModel(view.GetCBOgrod());   
 				OgrodRoslinyListaView view = new OgrodRoslinyListaView(model);
 				OgrodRoslinyListaControler controler = new OgrodRoslinyListaControler(model,view);           
@@ -127,6 +131,18 @@ public class OgrodControler{
         public void actionPerformed(ActionEvent e) {
             try {
 				SlownikModel model = new PoraSadzeniaModel();
+				SlownikListaView view = new SlownikListaView(model);
+				SlownikListaControler controler = new SlownikListaControler(model,view); 
+            } catch (NumberFormatException nfex) {
+                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
+            }
+        }
+    }
+	public class MenuPraceOgrodoweActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e) {
+            try {
+				SlownikModel model = new PraceOgrodoweModel();
 				SlownikListaView view = new SlownikListaView(model);
 				SlownikListaControler controler = new SlownikListaControler(model,view); 
             } catch (NumberFormatException nfex) {

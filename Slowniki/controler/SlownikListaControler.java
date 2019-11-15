@@ -1,7 +1,7 @@
-package Slowniki.controler;
-import Slowniki.model.*;
-import Slowniki.view.*;
-import Slowniki.controler.*;
+package slowniki.controler;
+import slowniki.model.*;
+import slowniki.view.*;
+import slowniki.controler.*;
 import java.awt.event.*;
 
 public class SlownikListaControler{

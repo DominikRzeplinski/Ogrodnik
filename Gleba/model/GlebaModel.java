@@ -1,12 +1,12 @@
-package Gleba.model;
+package gleba.model;
 import java.beans.*;
-import DataBase.Table.ITable;
-import DataBase.Connection.*;
+import dataBase.table.ITable;
+import dataBase.connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
-import ViewHelper.*;
-import Slowniki.model.*;
+import viewHelper.*;
+import slowniki.model.*;
 
 
 public class GlebaModel extends SlownikModel

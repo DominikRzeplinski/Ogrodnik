@@ -1,40 +1,34 @@
-package ogrodRosliny.view;
+package roslinaPraceOgrodowe.view;
 import javax.swing.*;
 import java.awt.event.*;
-import ogrodRosliny.model.OgrodRoslinyModel;
+import roslinaPraceOgrodowe.model.RoslinaPraceOgrodoweModel;
 import java.beans.*;
 import viewHelper.*;
 import java.awt.Dialog.*;
 import java.awt.*;
 
-/** klasa widoku prezentująca atrybuty rosliny w ogrodzie
+/** klasa widoku prezentująca atrybuty prac ogrodowych przypisanych do roslin
  *@author Dominik Rzepliński
  *@version 1.0
  *@since v1.0
  */
-public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
+public class RoslinaPraceOgrodoweView extends JDialog implements PropertyChangeListener
 {
-	private JComboBox cbRoslina;
+	private JComboBox cbPraceOgrodowe;
 	private JTextArea tADescription;
 	private JButton bSave;
 	private JButton bCancel;
-	private OgrodRoslinyModel model;
+	private RoslinaPraceOgrodoweModel model;
 	private JLabel lNazwa;
 	private JLabel lOpis;
-	private JLabel lGleba;
-	private JLabel lRodzaj;
-	private JLabel lPoraSadzenia;
 	private JLabel lIlosc;
-	private JTextField tfGleba;
-	private JTextField tfRodzaj;
-	private JTextField tfPoraSadzenia;
 	private JTextField tfIlosc;
 	
-/** konstruktor widoku Ogrodu
+/** konstruktor widoku prac ogrodowych
   * Okno jest wysiwetlane w trybie modalnym
-  *@param model - renderowana roslina
+  *@param model - renderowana pracaOgrodowe
  */
-	public OgrodRoslinyView(OgrodRoslinyModel model){
+	public RoslinaPraceOgrodoweView(RoslinaPraceOgrodoweModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
 		
@@ -43,26 +37,16 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
 		getContentPane().setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-		cbRoslina = new JComboBox(model.roslina.GetDataList());
-		SetCBRoslina();
+		cbPraceOgrodowe = new JComboBox(model.praceOgrodowe.GetDataList());
+		SetCBPraceOgrodowe();
 		lNazwa = new JLabel("Nazwa");
 		lOpis = new JLabel("Opis");
 		lIlosc = new JLabel("Ilosc");
 		bSave = new JButton("Zapisz");
 		bSave.setVerifyInputWhenFocusTarget(true);
 		bCancel = new JButton("Anuluj");
-		lGleba = new JLabel("Gleba");
-		lRodzaj = new JLabel("Rodzaj");
-		lPoraSadzenia = new JLabel("PoraSadzenia");
 		tADescription = new JTextArea(model.GetOpis(),4,20);
 		tADescription.setInputVerifier(new InputVerifierLength(256));
-		tADescription.setEditable(false);
-		tfGleba = new JTextField(model.roslina.gleba.GetNazwa(),20);
-		tfGleba.setEditable(false);
-		tfRodzaj = new JTextField(model.roslina.rodzajeRoslin.GetNazwa(),20);
-		tfRodzaj.setEditable(false);
-		tfPoraSadzenia = new JTextField(model.roslina.poraSadzenia.GetNazwa(),20);
-		tfPoraSadzenia.setEditable(false);
 		tfIlosc = new JTextField(Integer.toString(this.model.GetIlosc()),5);
 		tfIlosc.setInputVerifier(new InputVerifierLength(4));
 		JScrollPane SPDescription = new JScrollPane(tADescription);
@@ -70,15 +54,9 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
 			layout.createSequentialGroup()
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addComponent(lNazwa)
-					.addComponent(lGleba)
-					.addComponent(lRodzaj)
-					.addComponent(lPoraSadzenia)
 					.addComponent(lIlosc))
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-					.addComponent(cbRoslina)
-					.addComponent(tfGleba)
-					.addComponent(tfRodzaj)
-					.addComponent(tfPoraSadzenia)
+					.addComponent(cbPraceOgrodowe)
 					.addComponent(tfIlosc))
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addComponent(lOpis))
@@ -94,18 +72,9 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
 						.addGroup(layout.createSequentialGroup()
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lNazwa)
-								.addComponent(cbRoslina)
+								.addComponent(cbPraceOgrodowe)
 								.addComponent(lOpis)))
 						.addGroup(layout.createSequentialGroup()
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lGleba)
-								.addComponent(tfGleba))
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lRodzaj)
-								.addComponent(tfRodzaj))
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lPoraSadzenia)
-								.addComponent(tfPoraSadzenia))
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lIlosc)
 								.addComponent(tfIlosc))))
@@ -130,26 +99,26 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
 		setVisible(true);
 	}
 	
-/** metoda ustawia wybrana rosline z listy roslin
+/** metoda ustawia wybrana prace z listy prac ogrodowych
  */
-	private void SetCBRoslina(){ 
-		for (int i=0; i < cbRoslina.getItemCount(); i++)
+	private void SetCBPraceOgrodowe(){ 
+		for (int i=0; i < cbPraceOgrodowe.getItemCount(); i++)
 		{
-			ComboBoxItem item = (ComboBoxItem)cbRoslina.getItemAt(i);
-			if (item.getKey() == model.GetIdRosliny())
-				cbRoslina.setSelectedIndex(i);
+			ComboBoxItem item = (ComboBoxItem)cbPraceOgrodowe.getItemAt(i);
+			if (item.getKey() == model.GetIdPraceOgrodowe())
+				cbPraceOgrodowe.setSelectedIndex(i);
 		}
 	} 
 	
-/** metoda pobiera id wybranej rosliny z listy roslin
- *@return idRosliny
+/** metoda pobiera id wybranej pracy z listy prac ogrodowych
+ *@return idPracyOgrodowe
  */
-	public int GetCBRoslina(){ 
-		Object item = cbRoslina.getSelectedItem();
+	public int GetCBPracaOgrodowa(){ 
+		Object item = cbPraceOgrodowe.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
-/** metoda pobiera ilosc wybranej rosliny
+/** metoda pobiera ilosc wybranej pracy ogrodowej
  *@return ilosc
  */
 	public int GetTFIlosc(){ 
@@ -178,11 +147,11 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
 		bCancel.addActionListener(al);
 	}
 	
-/** metoda dodaje klasę nasłuchującą dla zmiany wybranej rosliny
+/** metoda dodaje klasę nasłuchującą dla zmiany wybranej pracy ogrodowej
  *@param al ActionListener
  */
-	public void AddCBRoslinaActionListener(ActionListener al){
-		cbRoslina.addActionListener(al);
+	public void AddCBPraceOgrodoweActionListener(ActionListener al){
+		cbPraceOgrodowe.addActionListener(al);
 	} 
 	
 /** metoda jest implementacja PropertyChangeListener.
@@ -191,10 +160,7 @@ public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
  */
     public void propertyChange(PropertyChangeEvent evt) {
 		
-		tfGleba.setText(this.model.roslina.gleba.GetNazwa());
-		tfRodzaj.setText(this.model.roslina.rodzajeRoslin.GetNazwa());
-		tfPoraSadzenia.setText(this.model.roslina.poraSadzenia.GetNazwa());
-		tADescription.setText(this.model.roslina.GetOpis());
+		tADescription.setText(this.model.praceOgrodowe.GetOpis());
 		tfIlosc.setText(Integer.toString(this.model.GetIlosc()));
     }
 }

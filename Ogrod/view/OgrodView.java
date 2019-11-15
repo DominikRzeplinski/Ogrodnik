@@ -1,9 +1,9 @@
-package Ogrod.view;
+package ogrod.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Ogrod.model.OgrodModel;
+import ogrod.model.OgrodModel;
 import java.beans.*;
-import ViewHelper.*;
+import viewHelper.*;
 
 
 /** klasa widoku prezentująca informacje dotyczące Ogrodu
@@ -41,6 +41,7 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 	private JMenuItem mIRodzaje;
 	private JMenuItem mIPoraSadzenia;
 	private JMenuItem mIListaRosliny;
+	private JMenuItem mIListaPracOgrodowych;
 	
 /** konstruktor widoku Ogrodu
   *@param model - renderowany Ogrod
@@ -185,11 +186,15 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 		mIPoraSadzenia = new JMenuItem("Pora sadzenia");
 		mSlowniki.add(mIPoraSadzenia);
 		mSlowniki.addSeparator();
+		mIListaPracOgrodowych = new JMenuItem("Prace ogrodowe");
+		mSlowniki.add(mIListaPracOgrodowych);
+		mSlowniki.addSeparator();
 		
 		mRosliny = new JMenu("Rosliny");
 		mb.add(mRosliny);
 		mIListaRosliny = new JMenuItem("Lista");
 		mRosliny.add(mIListaRosliny);
+		
 	}
 	
 /** metoda pobiera wpisaną nazwę ogrodu
@@ -251,6 +256,13 @@ public class OgrodView extends JFrame implements PropertyChangeListener
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
+	
+/** metoda dodaje klasę nasłuchującą dla Menu.PraceOgrodowe.lista
+ *@param al ActionListener
+ */
+	public void AddMenuPraceOgrodoweActionListener(ActionListener al){
+		mIListaPracOgrodowych.addActionListener(al);
+	}
 	
 /** metoda dodaje klasę nasłuchującą dla Menu.Rosliny.lista
  *@param al ActionListener

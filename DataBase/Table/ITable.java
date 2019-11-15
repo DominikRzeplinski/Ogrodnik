@@ -1,5 +1,5 @@
-package DataBase.Table;
-import DataBase.Connection.*;
+package dataBase.table;
+import dataBase.connection.*;
 import java.util.*;
 
 /** intefejs dostepowy do tabeli
