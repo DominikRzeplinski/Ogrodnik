@@ -1,23 +1,24 @@
-package Roslina.view;
+package OgrodRosliny.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Roslina.model.*;
+import OgrodRosliny.model.*;
 import java.beans.*;
 import java.awt.*;
 import ViewHelper.*;
 import javax.swing.table.*;
-public class RoslinaListaView extends JFrame implements PropertyChangeListener
+
+public class OgrodRoslinyListaView extends JFrame implements PropertyChangeListener
 {
 	private JList lList;
 	public JTable tTable;
 	private ListSelectionModel lsmTable;
-	private RoslinaModel model;
+	private OgrodRoslinyModel model;
 	private JButton bAdd; 
 	private JButton bEdit;
 	private JButton bRemove;
 	private JButton bCancel;
 	
-	public RoslinaListaView(RoslinaModel model){
+	public OgrodRoslinyListaView(OgrodRoslinyModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
 		
@@ -76,7 +77,6 @@ public class RoslinaListaView extends JFrame implements PropertyChangeListener
 		tTable.removeColumn(tTable.getColumnModel().getColumn(0));
 		((AbstractTableModel)tTable.getModel()).fireTableDataChanged();
 	}
-	
 	public int GetSelectedId(){
 		String id = (String)tTable.getModel().getValueAt(tTable.getSelectedRow(),0);
 		return Integer.parseInt(id);

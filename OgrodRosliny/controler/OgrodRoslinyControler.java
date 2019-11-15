@@ -1,81 +1,52 @@
-package Ogrod.controler;
-import Ogrod.model.OgrodModel;
-import Ogrod.view.OgrodView;
+package OgrodRosliny.controler;
+import OgrodRosliny.model.OgrodRoslinyModel;
+import OgrodRosliny.view.OgrodRoslinyView;
 import java.awt.event.*;
 
-public class OgrodControler{
-	private OgrodModel model;
-    private OgrodView view;
+public class OgrodRoslinyControler{
+	private OgrodRoslinyModel model;
+    private OgrodRoslinyView view;
     
-    public OgrodControler(OgrodModel model, OgrodView view){
+    public OgrodRoslinyControler(OgrodRoslinyModel model, OgrodRoslinyView view){
         this.model = model;
         this.view = view;
 		view.AddSaveActionListener(new SaveListener());
 		view.AddCancelActionListener(new CancelListener());
-		view.AddCBOgrodActionListener(new CBOgrodListener());
-		view.AddDeleteActionListener(new AddDeleteActionListener());
-		view.AddDetailsActionListener(new AddDetailsActionListener());
+		view.AddCancelActionListener(new CancelListener());
+		view.AddCBRoslinaActionListener(new CBRoslinaListener());
+		view.Show();
     }
 	public class SaveListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-                model.SetNazwa(view.GetTFNazwa());
-                model.SetOpis(view.GetTADescription());
-                model.SetMiasto(view.GetTFMiasto());
-                model.SetUlica(view.GetTFUlica());
-                model.SetNrDomu(view.GetTFNrDomu());
-                model.SetNrMieszkania(view.GetTFNrMieszkania());
-                model.SetKodPocztowy(view.GetTFKodPocztowy());
+				model.SetIdRosliny(view.GetCBRoslina());
                 model.Update();
+                view.dispose();
                 
             } catch (NumberFormatException nfex) {
-                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
+                view.showError("Bad input: '");
             }
-        } 
+        }
     }
 	public class CancelListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-				model.GetData(view.GetCBOgrod());
+                view.dispose();
                 
             } catch (NumberFormatException nfex) {
-                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
+                view.showError("Bad input: '");
             }
         }
     }
-	public class CBOgrodListener implements ActionListener
+	public class CBRoslinaListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e) {
             try {
-                
-				model.GetData(view.GetCBOgrod());
-                
+				model.roslina.GetData(view.GetCBRoslina());
             } catch (NumberFormatException nfex) {
-                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
-            }
-        }
-    }
-	public class AddDeleteActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e) {
-            try {
-                
-				model.DeleteData();
-                
-            } catch (NumberFormatException nfex) {
-                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
-            }
-        }
-    }
-	public class AddDetailsActionListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e) {
-            try {
-                                
-            } catch (NumberFormatException nfex) {
-                view.showError("Bad input: '" + view.GetTFNazwa() + "'");
+                view.showError("Bad input: '");
             }
         }
     }

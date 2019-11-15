@@ -34,7 +34,6 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 	public void SetIdRodzaj(int idRodzaj){this.idRodzaj = idRodzaj;}
 	public void SetIdPoraSadzenia(int idPoraSadzenia){this.idPoraSadzenia = idPoraSadzenia;}
 	public RoslinaModel(){
-		System.out.print("\nRoslina\n");
 		CreateTable();
         support = new PropertyChangeSupport(this);
 		gleba = new GlebaModel();
@@ -157,17 +156,18 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				this.opis = rs.getString("Opis");
 				this.id = rs.getInt("Id");
 				this.idGleby = rs.getInt("idGleba");
-				this.gleba.GetData(rs.getInt("idGleba"));
 				this.idRodzaj = rs.getInt("idRodzajRoslin");
-				this.rodzajeRoslin.GetData(rs.getInt("idRodzajRoslin"));
 				this.idPoraSadzenia = rs.getInt("idPoraSadzenia");
-				this.poraSadzenia.GetData(rs.getInt("idPoraSadzenia"));
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
+		this.gleba.GetData(this.idGleby);
+		this.rodzajeRoslin.GetData(this.idRodzaj);
+		this.poraSadzenia.GetData(this.idPoraSadzenia);
 		CloseConnection();
+		support.firePropertyChange("Roslina", "A", "B");
 		return true;
 	}
  
@@ -182,7 +182,6 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 	public boolean CreateTable(){	
 		SetConnection();
 		int ret =0;
-			System.out.print("\nRoslina\n");
 		try{
 			Statement statement = connection.createStatement();
 			String createRoslina = "CREATE TABLE [Roslina] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
@@ -191,9 +190,7 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				"idGleba INT NULL CONSTRAINT fk_Gleba REFERENCES [Gleba](Id), "+
 				"idRodzajRoslin INT NULL CONSTRAINT fk_RodzajeRoslin REFERENCES [RodzajeRoslin](Id), "+
 				"idPoraSadzenia INT NULL CONSTRAINT fk_PoraSadzenia REFERENCES [PoraSadzenia](Id)) ";
-			System.out.print("\nRoslina2\n");
 			ret = statement.executeUpdate(createRoslina);
-			System.out.print("\nRoslina3\n");
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());

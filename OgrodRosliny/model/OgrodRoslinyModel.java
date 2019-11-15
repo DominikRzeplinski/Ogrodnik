@@ -4,78 +4,67 @@ import DataBase.Table.ITable;
 import DataBase.Connection.*;
 import java.sql.Statement;
 import java.sql.*;
+import Roslina.model.*;
 import java.util.*;
 import ViewHelper.*;
 
 public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 {
-	private static String dbTableName = "OgrodRosliny"; 
+	public RoslinaModel roslina; 
+	public String GetTableName(){return "OgrodRosliny";} 
 	private PropertyChangeSupport support;
 	int id;
-	int idOgrod;
 	int idRosliny;
-	Date dataSadzenia;
-	int wiekSadzenia;
-	bool zywa;
+	int idOgrodu;
+	String nazwa; 
+	String opis; 
 	public String GetNazwa(){return nazwa;}
-	public int GetId(){return id;}
 	public String GetOpis(){return opis;}
-	public String GetMiasto(){return miasto;}
-	public String GetUlica(){return ulica;}
-	public String GetNrDomu(){return nrDomu;}
-	public String GetNrMieszkania(){return nrMieszkania;}
-	public String GetKodPocztowy(){return kodPocztowy;}
-	public void SetNazwa(String nazwa){this.nazwa = nazwa;}
-	public void SetOpis(String opis){this.opis = opis;}
-	public void SetMiasto(String miasto){this.miasto = miasto;}
-	public void SetUlica(String ulica){this.ulica = ulica;}
-	public void SetNrDomu(String nrDomu){this.nrDomu = nrDomu;}
-	public void SetNrMieszkania(String nrMieszkania){this.nrMieszkania = nrMieszkania;}
-	public void SetKodPocztowy(String kodPocztowy){this.kodPocztowy = kodPocztowy;}
-	public OgrodRoslinyModel(){
+	public int GetIdRosliny(){return idRosliny;}
+	public void SetIdRosliny(int idRosliny){this.idRosliny = idRosliny;}
+	public OgrodRoslinyModel(int idOgrodu){
+		this.idOgrodu = idOgrodu;
 		CreateTable();
         support = new PropertyChangeSupport(this);
+		roslina = new RoslinaModel();
+		Reset();
 	}
+	
+	public boolean IsNew(){
+		return (this.id ==0);
+	}
+	
 	private void Reset(){
 		this.id=0;
 		this.nazwa=" ";
 		this.opis=" ";
-		this.miasto=" ";
-		this.ulica=" ";
-		this.nrDomu=" ";
-		this.nrMieszkania=" ";
-		this.kodPocztowy=" ";
+		this.idRosliny=0;
 	}
 	
 	public boolean DeleteData() {
 		SetConnection();
 		try{
-			String deleteOgrodRosliny = "DELETE FROM OgrodRosliny WHERE id = ?";
-			PreparedStatement ps = connection.prepareStatement(deleteOgrodRosliny);
+			String deleteRoslina = "DELETE FROM OgrodRosliny WHERE id = ?";
+			PreparedStatement ps = connection.prepareStatement(deleteRoslina);
 			ps.setInt(1,this.id);
 			ps.executeUpdate();
-			Reset();
 		}catch(SQLException exception) 
 		{
            // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
-		support.firePropertyChange("OgrodRosliny", "A", "B");
 		CloseConnection();
+		Reset();
+		support.firePropertyChange("OgrodRosliny", "A", "B");
 		return true; 
 	}
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertOgrodRosliny = "INSERT INTO OgrodRosliny (Name, Opis, Miasto, Ulica, nrDomu, nrMieszkania, KodPocztowy) VALUES (?,?,?,?,?,?,?)";
+			String insertOgrodRosliny = "INSERT INTO OgrodRosliny (idRosliny, idOgrodu) VALUES (?,?)";
 			PreparedStatement ps = connection.prepareStatement(insertOgrodRosliny,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,this.nazwa);
-			ps.setString(2,this.opis);
-			ps.setString(3,this.miasto);
-			ps.setString(4,this.ulica);
-			ps.setString(5,this.nrDomu);
-			ps.setString(6,this.nrMieszkania);
-			ps.setString(7,this.kodPocztowy);
+			ps.setInt(1,this.idRosliny);
+			ps.setInt(2,this.idOgrodu);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -108,13 +97,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				rs.updateString("Name", this.nazwa);
-				rs.updateString("Opis", this.opis);
-				rs.updateString("Miasto", this.miasto);
-				rs.updateString("Ulica", this.ulica);
-				rs.updateString("nrDomu", this.nrDomu);
-				rs.updateString("nrMieszkania", this.nrMieszkania);
-				rs.updateString("KodPocztowy", this.kodPocztowy);
+				rs.updateInt("idRosliny", this.idRosliny);
 				rs.updateRow();
 			}
 		}catch(SQLException exception) 
@@ -128,10 +111,9 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 	
 	public boolean GetData(int id) {
 		SetConnection();
-		int temp = this.id;
 		Reset();
 		try{
-			String query = "SELECT * FROM OgrodRosliny WHERE id = ?";
+			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
@@ -139,28 +121,28 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 			{
 				this.nazwa = rs.getString("Name");
 				this.opis = rs.getString("Opis");
-				this.miasto = rs.getString("Miasto");
-				this.ulica = rs.getString("Ulica");
-				this.nrDomu = rs.getString("nrDomu");
-				this.nrMieszkania = rs.getString("nrMieszkania");
-				this.kodPocztowy = rs.getString("KodPocztowy");
 				this.id = rs.getInt("Id");
+				this.idRosliny = rs.getInt("idRosliny");
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
 		}
+		this.roslina.GetData(this.idRosliny);
+		
 		CloseConnection();
-		support.firePropertyChange("OgrodRoslinyGetData", "a", "b");
+		support.firePropertyChange("OgrodRosliny", "A", "B");
 		return true;
 	}
  
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
+		roslina.addPropertyChangeListener(pcl);
     }
  
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
+		roslina.removePropertyChangeListener(pcl);
     }
 	
 	public boolean CreateTable(){	
@@ -168,13 +150,10 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createOgrodRosliny = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"idOgrod INT NULL CONSTRAINT fk_Ogrod REFERENCES [Ogrod](Id)) "+
-				"idRosliny INT NULL CONSTRAINT fk_Roslina REFERENCES [Roslina](Id)) "+
-				"DataSadzenia DATETIME, " +
-				"WiekSadzenia INT, " +
-				"Zywa BIT,) ";
-			ret = statement.executeUpdate(createOgrodRosliny);
+			String createRoslina = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
+				"idOgrodu INT NULL CONSTRAINT fk_Ogrody REFERENCES [Ogrod](Id), "+
+				"idRosliny INT NULL CONSTRAINT fk_Rosliny REFERENCES [Roslina](Id)) ";
+			ret = statement.executeUpdate(createRoslina);
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
 			System.out.print(exception.toString());
@@ -189,9 +168,10 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT * FROM OgrodRosliny";
-			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery(query);
+			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1,idOgrodu);
+			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
 				List.add(new ComboBoxItem(rs.getInt("Id"),rs.getString("Name")));
@@ -202,5 +182,38 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		}
 		CloseConnection();
 		return List;
+	}
+	
+	public Vector<String> GetDataTableColumnsNames(){
+		Vector<String> names = new Vector<String>(); 
+		names.add("Id");
+		names.add("Nazwa");
+		names.add("Opis");
+		return names;
+	}
+	
+	public Vector<Vector<String>> GetDataTableList()
+	{
+		Vector<Vector<String>> list = new Vector<Vector<String>>();
+		SetConnection();
+		try{
+			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1,idOgrodu);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Vector<String> row = new Vector<String>();
+				row.add(String.valueOf(rs.getInt("Id")));
+				row.add(rs.getString("Name"));
+				row.add(rs.getString("Opis"));
+				list.add(row);
+			}
+		}catch(SQLException exception) {
+            // Output exception ClassNotFoundExceptions.
+			System.out.print(exception.toString());
+		}
+		CloseConnection();
+		return list;
 	}
 }

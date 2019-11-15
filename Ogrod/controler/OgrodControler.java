@@ -11,6 +11,9 @@ import PoraSadzenia.model.*;
 import Roslina.model.*;
 import Roslina.view.*;
 import Roslina.controler.*;
+import OgrodRosliny.model.*;
+import OgrodRosliny.view.*;
+import OgrodRosliny.controler.*;
 
 public class OgrodControler{
 	private OgrodModel model;
@@ -86,7 +89,9 @@ public class OgrodControler{
     {
         public void actionPerformed(ActionEvent e) {
             try {
-                                
+                OgrodRoslinyModel model = new OgrodRoslinyModel(view.GetCBOgrod());   
+				OgrodRoslinyListaView view = new OgrodRoslinyListaView(model);
+				OgrodRoslinyListaControler controler = new OgrodRoslinyListaControler(model,view);           
             } catch (NumberFormatException nfex) {
                 view.showError("Bad input: '" + view.GetTFNazwa() + "'");
             }
@@ -133,9 +138,7 @@ public class OgrodControler{
     {
         public void actionPerformed(ActionEvent e) {
             try {
-			System.out.print("\nRoslina\n");
 				RoslinaModel model = new RoslinaModel();
-			System.out.print("\nRoslina\n");
 				RoslinaListaView view = new RoslinaListaView(model);
 				RoslinaListaControler controler = new RoslinaListaControler(model,view); 
             } catch (NumberFormatException nfex) {

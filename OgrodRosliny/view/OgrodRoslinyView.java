@@ -1,180 +1,121 @@
-package Ogrod.view;
+package OgrodRosliny.view;
 import javax.swing.*;
 import java.awt.event.*;
-import Ogrod.model.OgrodModel;
+import OgrodRosliny.model.OgrodRoslinyModel;
 import java.beans.*;
 import ViewHelper.*;
+import java.awt.Dialog.*;
+import java.awt.*;
 
-public class OgrodView extends JFrame implements PropertyChangeListener
-{ 
-	private JTextField tFNazwa;
-	private JTextField tFMiasto;
-	private JTextField tFUlica;
-	private JTextField tFNrDomu;
-	private JTextField tFNrMieszkania;
-	private JTextField tFKodPocztowy;
+public class OgrodRoslinyView extends JDialog implements PropertyChangeListener
+{
+	private JComboBox cbRoslina;
 	private JTextArea tADescription;
-	private JButton bSave; 
+	private JButton bSave;
 	private JButton bCancel;
-	private JButton bDelete;
-	private JButton bDetails;
-	private OgrodModel model;
+	private OgrodRoslinyModel model;
 	private JLabel lNazwa;
 	private JLabel lOpis;
-	private JLabel lOgrod;
-	private JLabel lMiasto;
-	private JLabel lUlica;
-	private JLabel lNrDomu;
-	private JLabel lNrMieszkania;
-	private JLabel lKodPocztowy;
-	private JComboBox cbOgrod; 
+	private JLabel lGleba;
+	private JLabel lRodzaj;
+	private JLabel lPoraSadzenia;
+	private JTextField tfGleba;
+	private JTextField tfRodzaj;
+	private JTextField tfPoraSadzenia;
 	
-	
-	public OgrodView(OgrodModel model){
+	public OgrodRoslinyView(OgrodRoslinyModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
 		
 		GroupLayout layout = new GroupLayout(getContentPane());
+		
 		getContentPane().setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-		tFNazwa = new JTextField(model.GetNazwa(),20);
+		cbRoslina = new JComboBox(model.roslina.GetDataList());
+		SetCBRoslina();
 		lNazwa = new JLabel("Nazwa");
-		tFNazwa.setInputVerifier(new InputVerifierLength(50));
 		lOpis = new JLabel("Opis");
 		bSave = new JButton("Zapisz");
-		bSave.setVerifyInputWhenFocusTarget(true);;
+		bSave.setVerifyInputWhenFocusTarget(true);
 		bCancel = new JButton("Anuluj");
-		bDelete = new JButton("Usun");
-		bDetails = new JButton("Szczegoly");
+		lGleba = new JLabel("Gleba");
+		lRodzaj = new JLabel("Rodzaj");
+		lPoraSadzenia = new JLabel("PoraSadzenia");
 		tADescription = new JTextArea(model.GetOpis(),4,20);
 		tADescription.setInputVerifier(new InputVerifierLength(256));
+		tfGleba = new JTextField(model.roslina.gleba.GetNazwa(),20);
+		tfRodzaj = new JTextField(model.roslina.rodzajeRoslin.GetNazwa(),20);
+		tfPoraSadzenia = new JTextField(model.roslina.poraSadzenia.GetNazwa(),20);
 		JScrollPane SPDescription = new JScrollPane(tADescription);
-		cbOgrod = new JComboBox(model.GetDataList());
-		lOgrod = new JLabel("Ogrod");
-		lMiasto = new JLabel("Miasto");
-		tFMiasto = new JTextField(model.GetMiasto(),20);
-		tFMiasto.setInputVerifier(new InputVerifierLength(32));
-		lNrDomu = new JLabel("Nr domu");
-		tFNrDomu = new JTextField(model.GetNrDomu(),5);
-		tFNrDomu.setInputVerifier(new InputVerifierLength(32));
-		lNrMieszkania = new JLabel("Nr mieszkania");
-		tFNrMieszkania = new JTextField(model.GetNrMieszkania(),5);
-		tFNrMieszkania.setInputVerifier(new InputVerifierLength(32));
-		lUlica = new JLabel("Ulica");
-		tFUlica = new JTextField(model.GetUlica(),20);
-		tFUlica.setInputVerifier(new InputVerifierLength(32));
-		lKodPocztowy = new JLabel("Kod pocztowy");
-		tFKodPocztowy = new JTextField(model.GetKodPocztowy(),5);
-		tFKodPocztowy.setInputVerifier(new InputVerifierLength(32));
-		
 		layout.setHorizontalGroup(
-			layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(lOgrod)
-				.addComponent(cbOgrod))
-			.addGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addComponent(lNazwa)
-					.addComponent(lMiasto)
-					.addComponent(lUlica)
-					.addComponent(lNrDomu)
-					.addComponent(lNrMieszkania)
-					.addComponent(lKodPocztowy)
-					.addComponent(bDetails))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-					.addComponent(tFNazwa,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tFMiasto,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tFUlica,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tFNrDomu,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tFNrMieszkania,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tFKodPocztowy,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+					.addComponent(lGleba)
+					.addComponent(lRodzaj)
+					.addComponent(lPoraSadzenia))
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+					.addComponent(cbRoslina)
+					.addComponent(tfGleba)
+					.addComponent(tfRodzaj)
+					.addComponent(tfPoraSadzenia))
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addComponent(lOpis))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addComponent(SPDescription)
 				.addGroup(layout.createSequentialGroup()
 					.addComponent(bSave)
-					.addComponent(bCancel)
-					.addComponent(bDelete)))));
+					.addComponent(bCancel))));
 		layout.setVerticalGroup(
 			layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addGroup(layout.createSequentialGroup()
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lOgrod)
-								.addComponent(cbOgrod))))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					.addGroup(layout.createSequentialGroup()
 						.addGroup(layout.createSequentialGroup()
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(lNazwa)
-								.addComponent(tFNazwa)
+								.addComponent(cbRoslina)
 								.addComponent(lOpis)))
 						.addGroup(layout.createSequentialGroup()
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lMiasto)
-								.addComponent(tFMiasto)
-								))
-						.addGroup(layout.createSequentialGroup()
+								.addComponent(lGleba)
+								.addComponent(tfGleba))
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lUlica)
-								.addComponent(tFUlica)
-								))
-						.addGroup(layout.createSequentialGroup()
+								.addComponent(lRodzaj)
+								.addComponent(tfRodzaj))
 							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lNrDomu)
-								.addComponent(tFNrDomu)
-								))
-						.addGroup(layout.createSequentialGroup()
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lNrMieszkania)
-								.addComponent(tFNrMieszkania)
-								))
-						.addGroup(layout.createSequentialGroup()
-							.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(lKodPocztowy)
-								.addComponent(tFKodPocztowy)
-								)))
+								.addComponent(lPoraSadzenia)
+								.addComponent(tfPoraSadzenia))))
 					.addComponent(SPDescription))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					.addComponent(bDetails)
 					.addComponent(bSave)
-					.addComponent(bCancel)
-					.addComponent(bDelete)));
+					.addComponent(bCancel)));
 				
 		pack();
-		setSize(620,260);
+		setSize(550,250);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+		if(model.IsNew())
+			setTitle(model.GetTableName() + " - Dodaj");
+		else
+			setTitle(model.GetTableName() + " - Edytuj");
+		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	};
 	
-	public String GetTFNazwa(){
-		return tFNazwa.getText();
-	}
-	public String GetTFMiasto(){
-		return tFMiasto.getText();
-	}
-	public String GetTFUlica(){
-		return tFUlica.getText();
-	}
-	public String GetTFNrDomu(){
-		return tFNrDomu.getText();
-	}
-	public String GetTFNrMieszkania(){
-		return tFNrMieszkania.getText();
-	}
-	public String GetTFKodPocztowy(){
-		return tFKodPocztowy.getText();
+	public void Show(){
+		setVisible(true);
 	}
 	
-	public String GetTADescription(){
-		return tADescription.getText();
+	private void SetCBRoslina(){ 
+		for (int i=0; i < cbRoslina.getItemCount(); i++)
+		{
+			ComboBoxItem item = (ComboBoxItem)cbRoslina.getItemAt(i);
+			if (item.getKey() == model.GetIdRosliny())
+				cbRoslina.setSelectedIndex(i);
+		}
 	} 
 	
-	public int GetCBOgrod(){ 
-		Object item = cbOgrod.getSelectedItem();
+	public int GetCBRoslina(){ 
+		Object item = cbRoslina.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
@@ -188,47 +129,18 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 	}
 	
 	public void AddCancelActionListener(ActionListener al){
-		bCancel.addActionListener(al); 
+		bCancel.addActionListener(al);
 	}
 	
-	public void AddDeleteActionListener(ActionListener al){
-		bDelete.addActionListener(al);
-	}
-	
-	public void AddDetailsActionListener(ActionListener al){
-		bDetails.addActionListener(al);
-	}
-	
-	public void AddCBOgrodActionListener(ActionListener al){
-		cbOgrod.addActionListener(al);
+	public void AddCBRoslinaActionListener(ActionListener al){
+		cbRoslina.addActionListener(al);
 	} 
 	
     public void propertyChange(PropertyChangeEvent evt) {
-		if ("OgrodGetData".equals(evt.getPropertyName()))
-		{
-			tFNazwa.setText(this.model.GetNazwa());
-			tADescription.setText(this.model.GetOpis());
-			tFMiasto.setText(this.model.GetMiasto());
-			tFUlica.setText(this.model.GetUlica());
-			tFNrDomu.setText(this.model.GetNrDomu());
-			tFNrMieszkania.setText(this.model.GetNrMieszkania());
-			tFKodPocztowy.setText(this.model.GetKodPocztowy());
-		}else if("Ogrod".equals(evt.getPropertyName()))
-		{
-			tFNazwa.setText(this.model.GetNazwa());
-			tADescription.setText(this.model.GetOpis());
-			tFMiasto.setText(this.model.GetMiasto());
-			tFUlica.setText(this.model.GetUlica());
-			tFNrDomu.setText(this.model.GetNrDomu());
-			tFNrMieszkania.setText(this.model.GetNrMieszkania());
-			tFKodPocztowy.setText(this.model.GetKodPocztowy());
-			cbOgrod.setModel(new DefaultComboBoxModel<ComboBoxItem>(model.GetDataList()));
-			for (int i=0; i < cbOgrod.getItemCount(); i++)
-			{
-				ComboBoxItem item = (ComboBoxItem)cbOgrod.getItemAt(i);
-				if (item.getKey() == model.GetId())
-					cbOgrod.setSelectedIndex(i);
-			}
-		}
+		
+		tfGleba.setText(this.model.roslina.gleba.GetNazwa());
+		tfRodzaj.setText(this.model.roslina.rodzajeRoslin.GetNazwa());
+		tfPoraSadzenia.setText(this.model.roslina.poraSadzenia.GetNazwa());
+		tADescription.setText(this.model.roslina.GetOpis());
     }
 }
