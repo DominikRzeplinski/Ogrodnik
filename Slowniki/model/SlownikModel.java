@@ -1,7 +1,7 @@
 package slowniki.model;
 import java.beans.*;
-import dataBase.Table.ITable;
-import dataBase.Connection.*;
+import dataBase.table.ITable;
+import dataBase.connection.*;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;

@@ -1,9 +1,9 @@
 import javax.swing.*;
-import Ogrod.view.*;
-import Ogrod.model.OgrodModel;
-import Gleba.model.*;
-import Ogrod.controler.*;
-import DataBase.Connection.*;
+import ogrod.view.*;
+import ogrod.model.OgrodModel;
+import gleba.model.*;
+import ogrod.controler.*;
+import dataBase.connection.*;
 
 /** klasa uruchamiająca aplikację Ogrodnik
  *@author Dominik Rzepliński
