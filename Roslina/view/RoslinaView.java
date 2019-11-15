@@ -7,6 +7,11 @@ import ViewHelper.*;
 import java.awt.Dialog.*;
 import java.awt.*;
 
+/** klasa widoku prezentująca informacje dotyczące Rosliny
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
 public class RoslinaView extends JDialog implements PropertyChangeListener
 {
 	private JTextField tFEdit;
@@ -23,6 +28,10 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 	private JComboBox cbRodzaj;
 	private JComboBox cbPoraSadzenia;
 	
+/** konstruktor widoku Rosliny
+  * Okno jest wysiwetlane w trybie modalnym
+  *@param model - renderowana Roslina
+ */
 	public RoslinaView(RoslinaModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
@@ -104,10 +113,14 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	};
 	
+/** metoda wyswietlajaca dialog
+ */
 	public void Show(){
 		setVisible(true);
 	}
 	
+/** metoda ustawia wybrana glebe ze slownika
+ */
 	private void SetCBGleba(){ 
 		for (int i=0; i < cbGleba.getItemCount(); i++)
 		{
@@ -116,6 +129,8 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 				cbGleba.setSelectedIndex(i);
 		}
 	} 
+/** metoda ustawia wybrany rodzaj ze slownika
+ */
 	private void SetCBRodzaj(){ 
 		for (int i=0; i < cbGleba.getItemCount(); i++)
 		{
@@ -124,6 +139,8 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 				cbRodzaj.setSelectedIndex(i);
 		}
 	} 
+/** metoda ustawia wybrana pore sadzenia ze slownika
+ */
 	private void SetCBPoraSadzenia(){ 
 		for (int i=0; i < cbGleba.getItemCount(); i++)
 		{
@@ -133,44 +150,72 @@ public class RoslinaView extends JDialog implements PropertyChangeListener
 		}
 	} 
 	
+/** metoda pobiera id wybranej gleby z listy slownikowej
+ *@return idGleby
+ */
 	public int GetCBGleba(){ 
 		Object item = cbGleba.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
 	
+/** metoda pobiera id wybranego rodzaju z listy slownikowej
+ *@return idRodzaj
+ */
 	public int GetCBRodzaj(){ 
 		Object item = cbRodzaj.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
 	
+/** metoda pobiera id wybranej pory sadzenia z listy slownikowej
+ *@return idPoraSadzenia
+ */
 	public int GetCBPoraSadzenia(){ 
 		Object item = cbPoraSadzenia.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
 	
+/** metoda pobiera nazwe rosliny
+ *@return nazwa
+ */
 	public String GetTFEdit(){
 		return tFEdit.getText();
 	}
 	
+/** metoda pobiera opis
+ *@return opis
+ */
 	public String GetTADescription(){
 		return tADescription.getText();
 	}
 	
+/** metoda wyswitla komunikat jako dialog
+ *@param errMessage String
+ */
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Zapisz
+ *@param al ActionListener
+ */
 	public void AddSaveActionListener(ActionListener al){
 		bSave.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Anuluj
+ *@param al ActionListener
+ */
 	public void AddCancelActionListener(ActionListener al){
 		bCancel.addActionListener(al);
 	}
 	
+/** metoda jest implementacja PropertyChangeListener.
+ * Za jej pomocą widok jest informowany o zmianach w modelu.  
+ *@param evt PropertyChangeEvent
+ */
     public void propertyChange(PropertyChangeEvent evt) {
 		if ("Roslina".equals(evt.getPropertyName()))
 		{

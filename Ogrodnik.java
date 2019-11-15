@@ -5,24 +5,31 @@ import Gleba.model.*;
 import Ogrod.controler.*;
 import DataBase.Connection.*;
 
-public class Hello extends JFrame
+/** klasa uruchamiająca aplikację Ogrodnik
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
+public class Ogrodnik
 {
 	
- public Hello()
- {
- setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- //getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
- setSize(400,100);
- setVisible(true);
- }
-  public static void main(String[] args){
+/** Kontruktor klasy. 
+ * Nie jest zaimplementowany
+ */
+ public Ogrodnik()
+ {}
+/** Metoda startowa programu. 
+ */
+  public static void main(){
 	  
 	DataBaseAccess.CreateDataBaseAccess();
-	
+	/** Model */
 	OgrodModel model = new OgrodModel();
 	
+	/** Widok */
 	OgrodView view = new OgrodView(model);
 	
+	/** Kontroler */
 	OgrodControler controler = new OgrodControler(model,view);
   }
 }

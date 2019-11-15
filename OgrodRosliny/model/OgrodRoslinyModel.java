@@ -16,12 +16,15 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 	int id;
 	int idRosliny;
 	int idOgrodu;
+	int ilosc;
 	String nazwa; 
 	String opis; 
 	public String GetNazwa(){return nazwa;}
+	public int GetIlosc(){return ilosc;}
 	public String GetOpis(){return opis;}
 	public int GetIdRosliny(){return idRosliny;}
 	public void SetIdRosliny(int idRosliny){this.idRosliny = idRosliny;}
+	public void SetIlosc(int ilosc){this.ilosc = ilosc;}
 	public OgrodRoslinyModel(int idOgrodu){
 		this.idOgrodu = idOgrodu;
 		CreateTable();
@@ -39,6 +42,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		this.nazwa=" ";
 		this.opis=" ";
 		this.idRosliny=0;
+		this.ilosc=0;
 	}
 	
 	public boolean DeleteData() {
@@ -61,10 +65,11 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 	public boolean SaveData() {
 		SetConnection();
 		try{
-			String insertOgrodRosliny = "INSERT INTO OgrodRosliny (idRosliny, idOgrodu) VALUES (?,?)";
+			String insertOgrodRosliny = "INSERT INTO OgrodRosliny (idRosliny, idOgrodu, ilosc) VALUES (?,?,?)";
 			PreparedStatement ps = connection.prepareStatement(insertOgrodRosliny,Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1,this.idRosliny);
 			ps.setInt(2,this.idOgrodu);
+			ps.setInt(3,this.ilosc);
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -98,6 +103,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 			while(rs.next())
 			{
 				rs.updateInt("idRosliny", this.idRosliny);
+				rs.updateInt("ilosc", this.ilosc);
 				rs.updateRow();
 			}
 		}catch(SQLException exception) 
@@ -113,7 +119,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		SetConnection();
 		Reset();
 		try{
-			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.id = ?";
+			String query = "SELECT ogr.Id, ogr.idRosliny, ogr.ilosc, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.id = ?";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
@@ -123,6 +129,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 				this.opis = rs.getString("Opis");
 				this.id = rs.getInt("Id");
 				this.idRosliny = rs.getInt("idRosliny");
+				this.ilosc = rs.getInt("ilosc");
 			}
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
@@ -152,7 +159,8 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 			Statement statement = connection.createStatement();
 			String createRoslina = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
 				"idOgrodu INT NULL CONSTRAINT fk_Ogrody REFERENCES [Ogrod](Id), "+
-				"idRosliny INT NULL CONSTRAINT fk_Rosliny REFERENCES [Roslina](Id)) ";
+				"idRosliny INT NULL CONSTRAINT fk_Rosliny REFERENCES [Roslina](Id), "+
+				"ilosc INT NULL) ";
 			ret = statement.executeUpdate(createRoslina);
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.
@@ -168,7 +176,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		List.add(new ComboBoxItem(0," "));
 		SetConnection();
 		try{
-			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
+			String query = "SELECT ogr.Id, ogr.idRosliny, ogr.ilosc, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,idOgrodu);
 			ResultSet rs = ps.executeQuery();
@@ -189,6 +197,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		names.add("Id");
 		names.add("Nazwa");
 		names.add("Opis");
+		names.add("Ilosc");
 		return names;
 	}
 	
@@ -197,7 +206,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		Vector<Vector<String>> list = new Vector<Vector<String>>();
 		SetConnection();
 		try{
-			String query = "SELECT ogr.Id, ogr.idRosliny, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
+			String query = "SELECT ogr.Id, ogr.idRosliny, ogr.ilosc, r.Name, r.Opis  FROM OgrodRosliny ogr INNER JOIN Roslina r ON r.id = ogr.idRosliny WHERE ogr.idOgrodu = ? ";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1,idOgrodu);
 			ResultSet rs = ps.executeQuery();
@@ -207,6 +216,7 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 				row.add(String.valueOf(rs.getInt("Id")));
 				row.add(rs.getString("Name"));
 				row.add(rs.getString("Opis"));
+				row.add(rs.getString("ilosc"));
 				list.add(row);
 			}
 		}catch(SQLException exception) {

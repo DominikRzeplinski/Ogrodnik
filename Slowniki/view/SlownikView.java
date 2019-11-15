@@ -7,6 +7,11 @@ import ViewHelper.*;
 import java.awt.Dialog.*;
 import java.awt.*;
 
+/** klasa widoku prezentująca informacje dotyczące Slownika
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
 public class SlownikView extends JDialog implements PropertyChangeListener
 {
 	private JTextField tFEdit;
@@ -17,6 +22,10 @@ public class SlownikView extends JDialog implements PropertyChangeListener
 	private JLabel lNazwa;
 	private JLabel lOpis;
 	
+/** konstruktor widoku Slownika
+  * Okno jest wysiwetlane w trybie modalnym
+  *@param model - renderowany Slownik
+ */
 	public SlownikView(SlownikModel model){
 		
 		this.model = model;
@@ -72,30 +81,51 @@ public class SlownikView extends JDialog implements PropertyChangeListener
 		setResizable(false);
 		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	};
+/** metoda wyswietlajaca dialog
+ */
 	public void Show(){
 		setVisible(true);
 	}
 	
+/** metoda pobiera nazwe slownikowa
+ *@return nazwa
+ */
 	public String GetTFEdit(){
 		return tFEdit.getText();
 	}
 	
+/** metoda pobiera opis
+ *@return opis
+ */
 	public String GetTADescription(){
 		return tADescription.getText();
 	}
 	
+/** metoda wyswitla komunikat jako dialog
+ *@param errMessage String
+ */
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Zapisz
+ *@param al ActionListener
+ */
 	public void AddSaveActionListener(ActionListener al){
 		bSave.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Anuluj
+ *@param al ActionListener
+ */
 	public void AddCancelActionListener(ActionListener al){
 		bCancel.addActionListener(al); 
 	}
 	
+/** metoda jest implementacja PropertyChangeListener.
+ * Za jej pomocą widok jest informowany o zmianach w modelu.  
+ *@param evt PropertyChangeEvent
+ */
     public void propertyChange(PropertyChangeEvent evt) {
 		if (model.GetTableName().equals(evt.getPropertyName()))
 		{

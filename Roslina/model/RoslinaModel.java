@@ -127,10 +127,16 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				rs.updateString("Opis", this.opis);
 				if (this.idGleby != 0)
 					rs.updateInt("idGleba", this.idGleby);
+				else
+					rs.updateNull("idGleba");
 				if (this.idRodzaj != 0)
 					rs.updateInt("idRodzajRoslin", this.idRodzaj);
+				else
+					rs.updateNull("idRodzajRoslin");
 				if (this.idPoraSadzenia != 0)
 					rs.updateInt("idPoraSadzenia", this.idPoraSadzenia);
+				else
+					rs.updateNull("idPoraSadzenia");
 				rs.updateRow();
 			}
 		}catch(SQLException exception) 
@@ -225,6 +231,9 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		names.add("Id");
 		names.add("Nazwa");
 		names.add("Opis");
+		names.add("Rodzaj");
+		names.add("Gleba");
+		names.add("Pora Sadzenia");
 		return names;
 	}
 	
@@ -233,7 +242,10 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		Vector<Vector<String>> list = new Vector<Vector<String>>();
 		SetConnection();
 		try{
-			String query = "SELECT * FROM Roslina";
+			String query = "SELECT r.Id, r.Name, r.Opis, g.Name AS Gleba, p.Name AS Pora, rr.Name AS Rodzaj FROM Roslina r "+
+			" LEFT OUTER JOIN Gleba g ON g.id = r.idGleba "+
+			" LEFT OUTER JOIN PoraSadzenia p ON p.id = r.idPoraSadzenia "+
+			" LEFT OUTER JOIN RodzajeRoslin rr ON rr.id = r.idRodzajRoslin ";
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 			while(rs.next())
@@ -242,6 +254,9 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 				row.add(String.valueOf(rs.getInt("Id")));
 				row.add(rs.getString("Name"));
 				row.add(rs.getString("Opis"));
+				row.add(rs.getString("Rodzaj"));
+				row.add(rs.getString("Gleba"));
+				row.add(rs.getString("Pora"));
 				list.add(row);
 			}
 		}catch(SQLException exception) {

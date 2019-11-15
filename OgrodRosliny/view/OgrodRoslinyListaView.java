@@ -7,6 +7,11 @@ import java.awt.*;
 import ViewHelper.*;
 import javax.swing.table.*;
 
+/** klasa widoku prezentująca liste roslin w danym ogrodzie
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
 public class OgrodRoslinyListaView extends JFrame implements PropertyChangeListener
 {
 	private JList lList;
@@ -18,6 +23,9 @@ public class OgrodRoslinyListaView extends JFrame implements PropertyChangeListe
 	private JButton bRemove;
 	private JButton bCancel;
 	
+/** konstruktor widoku Ogrodu
+  *@param model - renderowany Ogrod
+ */
 	public OgrodRoslinyListaView(OgrodRoslinyModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
@@ -71,37 +79,61 @@ public class OgrodRoslinyListaView extends JFrame implements PropertyChangeListe
 		setVisible(true);
 	};
 	
+/** metoda odswierza dane w tabeli
+ */
 	public void SetTableData(){
 		DefaultTableModel tModel = new DefaultTableModel(model.GetDataTableList(),model.GetDataTableColumnsNames());
 		tTable.setModel(tModel);
 		tTable.removeColumn(tTable.getColumnModel().getColumn(0));
 		((AbstractTableModel)tTable.getModel()).fireTableDataChanged();
 	}
+/** metoda zwraca id wybranej rosliny w ogrodzie
+ *@return  idRoslinyWOgrodzie
+ */
 	public int GetSelectedId(){
 		String id = (String)tTable.getModel().getValueAt(tTable.getSelectedRow(),0);
 		return Integer.parseInt(id);
 	}
 	
+/** metoda wyswitla komunikat jako dialog
+ *@param errMessage String
+ */
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Dodaj
+ *@param al ActionListener
+ */
 	public void AddAddActionListener(ActionListener al){
 		bAdd.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Edytuj
+ *@param al ActionListener
+ */
 	public void AddEditActionListener(ActionListener al){
 		bEdit.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Usun
+ *@param al ActionListener
+ */
 	public void AddRemoveActionListener(ActionListener al){
 		bRemove.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Anuluj
+ *@param al ActionListener
+ */
 	public void AddCancelActionListener(ActionListener al){
 		bCancel.addActionListener(al);
 	}
 	
+/** metoda jest implementacja PropertyChangeListener.
+ * Za jej pomocą widok jest informowany o zmianach w modelu.  
+ *@param evt PropertyChangeEvent
+ */
     public void propertyChange(PropertyChangeEvent evt) {
 		if (model.GetTableName().equals(evt.getPropertyName()))
 		{

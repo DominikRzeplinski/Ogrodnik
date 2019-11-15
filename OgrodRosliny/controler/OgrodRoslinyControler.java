@@ -21,6 +21,7 @@ public class OgrodRoslinyControler{
         public void actionPerformed(ActionEvent e) {
             try {
 				model.SetIdRosliny(view.GetCBRoslina());
+				model.SetIlosc(view.GetTFIlosc());
                 model.Update();
                 view.dispose();
                 

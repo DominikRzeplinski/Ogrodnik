@@ -5,9 +5,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
+/** klasa dostepowa do bazy danych access
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
 public class DataBaseAccess implements IDataBaseConnection{
+	/**Obiekt reprezentuje polaczenie z baza danych*/
 	public static Connection connection;
 	
+/** konstruktor klasy dostepowej, sprawdza czy sterowniki sa dostępne.
+ */
 	public DataBaseAccess(){ 
 		try {
             // Retrieve class by name.
@@ -19,6 +27,8 @@ public class DataBaseAccess implements IDataBaseConnection{
 		
 	}
 	
+/** metoda tworzy baze danych Ogrodnik.mdb.
+ */
 	public static void CreateDataBaseAccess(){
 		try {
 			connection = DriverManager.getConnection("jdbc:ucanaccess://Ogrodnik.mdb" + ";newdatabaseversion=V2010",
@@ -31,6 +41,8 @@ public class DataBaseAccess implements IDataBaseConnection{
 		}
 	}
 	
+/** metoda otwiera polaczenia z baza.
+ */
 	public void SetConnection(){
 		try {
 			connection = DriverManager.getConnection("jdbc:ucanaccess://Ogrodnik.mdb",
@@ -42,6 +54,8 @@ public class DataBaseAccess implements IDataBaseConnection{
 		}
 	}
 	
+/** metoda zamyka polaczenia z baza.
+ */
 	public void CloseConnection(){
 		try {
 			connection.close();

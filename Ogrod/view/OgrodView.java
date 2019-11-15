@@ -5,6 +5,12 @@ import Ogrod.model.OgrodModel;
 import java.beans.*;
 import ViewHelper.*;
 
+
+/** klasa widoku prezentująca informacje dotyczące Ogrodu
+ *@author Dominik Rzepliński
+ *@version 1.0
+ *@since v1.0
+ */
 public class OgrodView extends JFrame implements PropertyChangeListener
 { 
 	private JTextField tFNazwa;
@@ -36,6 +42,9 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 	private JMenuItem mIPoraSadzenia;
 	private JMenuItem mIListaRosliny;
 	
+/** konstruktor widoku Ogrodu
+  *@param model - renderowany Ogrod
+ */
 	public OgrodView(OgrodModel model){
 		this.model = model;
 		model.addPropertyChangeListener(this);
@@ -154,9 +163,12 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createJMenu();
+		setTitle("Ogrodnik");
 		setVisible(true);
 	};
 	
+/** metoda tworząca górne menu programu
+ */
 	private void createJMenu()
 	{
 		mb = new JMenuBar();
@@ -180,71 +192,129 @@ public class OgrodView extends JFrame implements PropertyChangeListener
 		mRosliny.add(mIListaRosliny);
 	}
 	
+/** metoda pobiera wpisaną nazwę ogrodu
+ *@return String Nazwa
+ */
 	public String GetTFNazwa(){
 		return tFNazwa.getText();
 	}
+/** metoda pobiera wpisaną nazwę miasta
+ *@return String Nazwa
+ */
 	public String GetTFMiasto(){
 		return tFMiasto.getText();
 	}
+/** metoda pobiera wpisaną nazwę ulicy
+ *@return String Nazwa
+ */
 	public String GetTFUlica(){
 		return tFUlica.getText();
 	}
+/** metoda pobiera wpisany nr domu
+ *@return String NrDomu
+ */
 	public String GetTFNrDomu(){
 		return tFNrDomu.getText();
 	}
+/** metoda pobiera wpisany nr mieszkania
+ *@return String nrMieszkania
+ */
 	public String GetTFNrMieszkania(){
 		return tFNrMieszkania.getText();
 	}
+/** metoda pobiera wpisany kod pocztowy
+ *@return String kodPocztowy
+ */
 	public String GetTFKodPocztowy(){
 		return tFKodPocztowy.getText();
 	}
 	
+/** metoda pobiera wpisany opis Ogrodu
+ *@return String Opis
+ */
 	public String GetTADescription(){
 		return tADescription.getText();
 	} 
 	
+/** metoda pobiera identyfikator wybranego ogrodu
+ *@return Int idOgrodu
+ */
 	public int GetCBOgrod(){ 
 		Object item = cbOgrod.getSelectedItem();
 		int key = ((ComboBoxItem)item).getKey();
 		return key;
 	} 
 	
+/** metoda wyswitla komunikat jako dialog
+ *@param errMessage String
+ */
     public void showError(String errMessage) {
         JOptionPane.showMessageDialog(this, errMessage);
     }
 	
+/** metoda dodaje klasę nasłuchującą dla Menu.Rosliny.lista
+ *@param al ActionListener
+ */
 	public void AddMenuListaRoslinActionListener(ActionListener al){
 		mIListaRosliny.addActionListener(al);
 	}
+/** metoda dodaje klasę nasłuchującą dla Menu.Slowniki.poraSadzenia
+ *@param al ActionListener
+ */
 	public void AddMenuPoraSadzeniaActionListener(ActionListener al){
 		mIPoraSadzenia.addActionListener(al);
 	}
+/** metoda dodaje klasę nasłuchującą dla Menu.Slowniki.rodzajeRoslin
+ *@param al ActionListener
+ */
 	public void AddMenuRodzajeRoslinActionListener(ActionListener al){
 		mIRodzaje.addActionListener(al);
 	}
+/** metoda dodaje klasę nasłuchującą dla Menu.Slowniki.gleby
+ *@param al ActionListener
+ */
 	public void AddMenuGlebyActionListener(ActionListener al){
 		mIGleby.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Zapisz
+ *@param al ActionListener
+ */
 	public void AddSaveActionListener(ActionListener al){
 		bSave.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Anuluj
+ *@param al ActionListener
+ */
 	public void AddCancelActionListener(ActionListener al){
 		bCancel.addActionListener(al); 
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla przycisku Usun
+ *@param al ActionListener
+ */
 	public void AddDeleteActionListener(ActionListener al){
 		bDelete.addActionListener(al);
 	}
+/** metoda dodaje klasę nasłuchującą dla przycisku Szczegoly
+ *@param al ActionListener
+ */
 	public void AddDetailsActionListener(ActionListener al){
 		bDetails.addActionListener(al);
 	}
 	
+/** metoda dodaje klasę nasłuchującą dla wyboru comboBoxa Ogrod
+ *@param al ActionListener
+ */
 	public void AddCBOgrodActionListener(ActionListener al){
 		cbOgrod.addActionListener(al);
 	} 
 	
+/** metoda jest implementacja PropertyChangeListener.
+ * Za jej pomocą widok jest informowany o zmianach w modelu.  
+ *@param evt PropertyChangeEvent
+ */
     public void propertyChange(PropertyChangeEvent evt) {
 		if ("OgrodGetData".equals(evt.getPropertyName()))
 		{
