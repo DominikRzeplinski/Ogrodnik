@@ -157,9 +157,9 @@ public class OgrodRoslinyModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createRoslina = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"idOgrodu INT NULL CONSTRAINT fk_Ogrody REFERENCES [Ogrod](Id), "+
-				"idRosliny INT NULL CONSTRAINT fk_Rosliny REFERENCES [Roslina](Id), "+
+			String createRoslina = "CREATE TABLE [OgrodRosliny] (Id COUNTER CONSTRAINT c_IdOR PRIMARY KEY, " +
+				"idOgrodu INT NULL CONSTRAINT fkOR_Ogrody REFERENCES [Ogrod](Id), "+
+				"idRosliny INT NULL CONSTRAINT fkOR_Rosliny REFERENCES [Roslina](Id), "+
 				"ilosc INT NULL) ";
 			ret = statement.executeUpdate(createRoslina);
 		}catch(SQLException exception) {

@@ -191,12 +191,12 @@ public class RoslinaModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createRoslina = "CREATE TABLE [Roslina] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
+			String createRoslina = "CREATE TABLE [Roslina] (Id COUNTER CONSTRAINT c_IdRoslina PRIMARY KEY, " +
+				"Name VARCHAR(50) CONSTRAINT c_RoslinaName UNIQUE, " +
 				"Opis VARCHAR(256), "+
-				"idGleba INT NULL CONSTRAINT fk_Gleba REFERENCES [Gleba](Id), "+
-				"idRodzajRoslin INT NULL CONSTRAINT fk_RodzajeRoslin REFERENCES [RodzajeRoslin](Id), "+
-				"idPoraSadzenia INT NULL CONSTRAINT fk_PoraSadzenia REFERENCES [PoraSadzenia](Id)) ";
+				"idGleba INT NULL CONSTRAINT fk_RoslinaGleba REFERENCES [Gleba](Id), "+
+				"idRodzajRoslin INT NULL CONSTRAINT fk_RoslinaRodzajeRoslin REFERENCES [RodzajeRoslin](Id), "+
+				"idPoraSadzenia INT NULL CONSTRAINT fk_RoslinaPoraSadzenia REFERENCES [PoraSadzenia](Id)) ";
 			ret = statement.executeUpdate(createRoslina);
 		}catch(SQLException exception) {
             // Output exception ClassNotFoundExceptions.

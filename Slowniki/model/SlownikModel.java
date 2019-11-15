@@ -132,8 +132,8 @@ public abstract class SlownikModel extends DataBaseAccess implements ITable
 			int ret =0;
 			try{
 				Statement statement = connection.createStatement();
-				String createGleba = "CREATE TABLE [" + GetTableName() +"] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-					"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
+				String createGleba = "CREATE TABLE [" + GetTableName() +"] (Id COUNTER CONSTRAINT c_Id"+GetTableName()+" PRIMARY KEY, " +
+					"Name VARCHAR(50) CONSTRAINT c_Name"+GetTableName()+" UNIQUE, " +
 					"Opis VARCHAR(256))";
 				ret = statement.executeUpdate(createGleba);
 			}catch(SQLException exception) {

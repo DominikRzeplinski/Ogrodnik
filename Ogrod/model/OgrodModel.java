@@ -174,8 +174,8 @@ public class OgrodModel extends DataBaseAccess implements ITable
 		int ret =0;
 		try{
 			Statement statement = connection.createStatement();
-			String createOgrod = "CREATE TABLE [Ogrod] (Id COUNTER CONSTRAINT c_Id PRIMARY KEY, " +
-				"Name VARCHAR(50) CONSTRAINT c_Name UNIQUE, " +
+			String createOgrod = "CREATE TABLE [Ogrod] (Id COUNTER CONSTRAINT c_IdOgrod PRIMARY KEY, " +
+				"Name VARCHAR(50) CONSTRAINT c_NameOgrod UNIQUE, " +
 				"Opis VARCHAR(256), " +
 				"Miasto VARCHAR(32), " +
 				"Ulica VARCHAR(32), " +
